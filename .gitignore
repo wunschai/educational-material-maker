@@ -1,0 +1,24 @@
+# DDD workflow plugin (clone for reference, not part of this project)
+ddd-workflow/
+
+# Claude Code local settings
+.claude/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Generated lesson artefacts (large binaries — keep source markdown only)
+lessons/*/audio/
+lessons/*/dist/

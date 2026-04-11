@@ -1,0 +1,90 @@
+# AGENTS.md — Educational Material Maker 共用指令
+
+> 本檔是 plugin 內所有 skills 與 subagents 共用的規範與規則來源。任何 skill / subagent 在運作時都應視本檔為 single source of truth。
+>
+> **Sprint 0001: hardcoded schema. Future: profile-driven.** —— 本檔目前的 schema 必填項清單是寫死的單一 schema，未來會由 schema profile 機制依課程類型動態決定。詳見 `docs/0001-skeleton/spec.md` ADR-6。
+
+---
+
+## 1. 預設語系
+
+- **預設輸出語系**：繁體中文（zh-TW）。
+- 使用者輸入若為英文 / 簡中 / 日文，研究與整理過程可使用該語系；最終 markdown 輸出仍以 zh-TW 為主，原文專有名詞可在括號內保留（例：「光合作用 (photosynthesis)」）。
+- 引用標題保留原文。
+- 簡報、講稿、影片旁白都遵循同一語系規則。
+
+## 2. 引用格式
+
+- **格式**：markdown footnote。引用標記寫在句末，引用區放檔案最底部。
+- **必含欄位**：標題、URL、存取日期（ISO 8601 `YYYY-MM-DD`）。
+- **格式範例**：
+
+```markdown
+光合作用是植物將光能轉化為化學能的過程 [^1]。
+
+## 引用
+
+[^1]: Photosynthesis — https://en.wikipedia.org/wiki/Photosynthesis （accessed 2026-04-11）
+```
+
+- **不使用** inline 連結（`[文字](url)`）作為主要引用方式——footnote 才是 SSOT。inline 連結僅用於補充說明、外部資源指引等非引用情境。
+
+## 3. Slug 自動生成規則
+
+當 `/edu.research <topic>` 沒有 `--slug` 參數時，由 main agent 依下列三步驟自動生成：
+
+1. **主題為英文**：lowercase → 空白轉 `-` → 移除非 `[a-z0-9-]` 字元 → 去除頭尾的 `-`。
+2. **主題為中文 / 其他語系**：main agent 翻譯為 1-3 個英文單字描述（例：「光合作用」→ `photosynthesis`、「歐洲文藝復興」→ `european-renaissance`），再套用步驟 1 的標準化。
+3. **失敗 fallback**：若上述兩步結果為空字串、純符號、或無法生成合理英文，使用 `lesson-<YYYYMMDD-HHMM>` 為 slug（時間取執行當下的本地時間）。
+
+使用者透過 `--slug=<value>` 明確指定時，以使用者提供的值為準（不做大小寫轉換、不檢查字元——但要避免路徑分隔符與非法檔名字元，必要時報錯讓使用者重下）。
+
+## 4. Schema 必填項清單
+
+> **Sprint 0001: hardcoded schema. Future: profile-driven.**
+>
+> 以下表格描述 `lessons/<slug>/topic.research.md` 在 Sprint 0001 的固定 schema。未來引入 schema profile 機制後，「必填/選填」會依課程類型（純介紹、概念講解、文獻綜述…）動態決定。任何 skill / subagent 引用本表時，請保留這條未來性提醒，避免把假設寫死進 prompt。
+
+| 區段 | 必填？ | 備註 |
+|---|---|---|
+| H1 標題 | 必填 | 即主題名稱（zh-TW） |
+| Metadata block | 必填 | `slug` / `generated`（ISO 8601）/ `source mode`（`web` 或 `files`）/ `depth`（`medium`） |
+| 學習關鍵字 | 必填 | unordered list，3-8 個 |
+| 子問題拆解 | 必填 | researcher 在搜尋前拆出的 4-6 個探索方向 |
+| 核心概念 | 必填 | 5-8 個概念，每個 100-200 字 |
+| 常見誤解 | **選填** | 若主題沒有典型誤解可省略 |
+| Open Questions | **選填** | researcher 認為都答完了可省略 |
+| 引用 | 必填 | footnote 格式，5-10 條 |
+
+**內容量級規則**（亦為硬規格）：
+
+- 核心概念數量：5 ≤ N ≤ 8
+- 每個核心概念字數：100 ≤ words ≤ 200（zh-TW 字元數約等於 words）
+- 引用數量：5 ≤ N ≤ 10
+- 每個核心概念至少有 1 個 footnote 引用
+
+## 5. Subagent 使用原則
+
+main agent 在以下情境**必須**透過 `Task` tool 派工到 subagent，不可在 main context 內直接執行：
+
+- 預期會超過 5 次 `WebSearch` 呼叫的研究任務
+- 預期會超過 3 次 `WebFetch` 呼叫的內容擷取
+- 預期會處理超過 10,000 字以上的原文資料
+- 任何 spec 中明確要求走 subagent 的流程（例：Sprint 0001 的 `/edu.research` 強制走 `edu-researcher`）
+
+派工時，main agent 提供結構化 prompt（topic / slug / depth / 輸出契約），subagent 自行決定內部搜尋策略。subagent 回傳結果後，main agent 只做最終格式檢查與落檔，不重新展開原始資料。
+
+## 6. 命名慣例
+
+- **檔案 / 資料夾**：kebab-case（例：`lessons/photosynthesis/topic.research.md`）
+- **slash command**：`<namespace>.<verb>` 格式（例：`/edu.research`、`/edu.outline`）
+- **Subagent 名稱**：`edu-<role>` 格式（例：`edu-researcher`、`edu-reviewer`）
+- **產出檔名**：固定（`topic.research.md` / `outline.md` / `slides.md`），不加日期或版本號——版本由 git 管。
+
+## 7. 反禁區（不得做）
+
+- ❌ 不在 main agent context 內展開大型搜尋結果
+- ❌ 不使用 inline 連結作為主要引用方式（用 footnote）
+- ❌ 不靜默覆寫使用者已產出的 lesson 檔案
+- ❌ 不在 Sprint 0001 假設未來的 schema profile 機制已存在
+- ❌ 不繞過本檔的 schema 規則直接產出不符合的 markdown

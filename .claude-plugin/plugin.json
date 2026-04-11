@@ -1,0 +1,16 @@
+{
+  "name": "educational-material-maker",
+  "description": "從主題生成研究摘要、教學大綱、Marp 簡報、TTS 旁白與帶旁白的教學影片。階段化的 Claude Code plugin。",
+  "version": "0.1.0",
+  "author": {
+    "name": "educational-material-maker contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "teaching",
+    "slides",
+    "marp",
+    "tts"
+  ]
+}
