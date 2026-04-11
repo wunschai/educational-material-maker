@@ -225,3 +225,84 @@ ddd.work step 3 規定要呼叫 `/simplify` 審查 git diff。本 sprint 的「d
 - 3 個產出檔案就位（兩個資料夾）
 - M1 + M2 全部 task 完成
 - 等待使用者明確同意後 commit
+
+---
+
+## v4 修補：xreview findings
+
+Sprint 0001 已 commit 為 root commit `30595f4` 後，執行 `/ddd.xreview`。本機沒有 `opencode` 與 `gemini` CLI，按 skill 規則退化為單方 review；又因為 ddd-reviewer subagent type 在本 session 未註冊（ddd-workflow 只裝了 skills、沒有 subagents），再退化為 general-purpose agent + ddd-reviewer 方法論 inline。雖然兩層退化，仍取得獨立 context 的審查觀點。
+
+Reviewer 找到 0 critical + 3 important findings，coordinator 全部讀實際 code 驗證為真：
+
+### Finding 1：AC-5 硬下限被破 1 字（confirmed）
+
+`lessons/photosynthesis-101/topic.research.md` 概念 4 = 99 CJK 字元，差 1 字。
+
+抓所有 sample 的字數核對：
+
+| 檔案 | 概念數 | 各概念 CJK 字元 | 引用數 |
+|---|---|---|---|
+| photosynthesis | 6 | 131/143/142/119/139/153 | 8 |
+| photosynthesis-101 | 6 | 116/124/125/**99**/135/130 | 8 |
+| library-ethics | 7 | 133/136/140/123/142/137/146 | 7 |
+
+19 個概念中只有 1 個越下限、最大字數 165 遠未碰上限。**修補**：放寬下限為 95（spec ADR-7）。100-200 仍是目標，95-99 是緊急容忍區。上限 200 不動。
+
+理由：100 是當初拍腦袋的整數，沒有教育學依據；99 vs 100 對教學可用性差別是 zero；對稱放寬上限沒必要因為從未被破。詳細決策脈絡見 spec.md ADR-7。
+
+**未手動補字 photosynthesis-101**——放寬規則後該檔自動合規，不需要動 sample。
+
+### Finding 2：SKILL.md line 104 bare 路徑回滾（confirmed）
+
+`skills/edu.research/SKILL.md` Step 3 派工 prompt 範本最後一段在 v3 修 timestamp 時新增：
+
+```
+撰寫前請務必閱讀 agents/edu-researcher.md 的「硬性上限」段——
+```
+
+bare 相對路徑，跟 v2 修補的 Bug B 同一類錯誤——同段 prompt 內 line 92-93 就有正確的 `${CLAUDE_PLUGIN_ROOT}/agents/edu-researcher.md`，line 104 卻單點漏掉。
+
+**修補**：line 104 改 `${CLAUDE_PLUGIN_ROOT}/agents/edu-researcher.md`。**並在 SKILL.md「路徑變數說明」段加防回滾警語**：
+
+> 任何提到 plugin 內部檔案的地方都要用 ${CLAUDE_PLUGIN_ROOT} 前綴，**包括 prompt 範本內** copy 給 subagent 的字串。修改本檔時請 grep 一下確認沒有 bare 路徑（v3 timestamp 修補時就在 Step 3 派工 prompt 範本內漏掉一處，xreview 才抓到——別重蹈覆轍）。
+
+修補後跑 grep 確認 `skills/` 與 `agents/` 下沒有任何 bare `references/AGENTS.md` 或 `agents/edu-researcher.md`：
+
+```
+$ grep -nE "(^|[^/])\bagents/edu-researcher\.md|(^|[^/])\breferences/AGENTS\.md" skills/ agents/ -r | grep -v CLAUDE_PLUGIN_ROOT
+（無輸出）
+```
+
+**為什麼 v3 自己沒抓到**：v3 跑 sanity check 用的 grep 模式只查 `references/AGENTS.md`，沒查 `agents/edu-researcher.md`。本次修補後的防回滾警語把這個 grep 步驟列為「修改本檔時必做」。
+
+### Finding 3：footnote uniqueness 規則漏洞（confirmed）
+
+`lessons/photosynthesis/topic.research.md` 概念 2 引用 markers 為 `[^3][^3]`，概念 4 為 `[^5][^5]`——表面看每段 2 個 footnote，實際 unique source 只有 1 個。沒違反現有規則（spec/AGENTS.md 的「至少 1 個 footnote 引用」沒 require uniqueness），但實質上該概念的可信度支撐弱於別的概念。
+
+**修補**：在 AGENTS.md §4「內容量級規則」加一條：
+
+> 每個核心概念至少有 1 個 footnote 引用，且**至少 1 個 unique source**（同一 footnote 在同一概念內重複標記不計為額外引用，例如 `[^3][^3]` 等同單一來源）
+
+並在 `agents/edu-researcher.md` 第四步硬性上限表新增一列 `每個核心概念 unique source 數 ≥ 1`，輸出前的硬性核對清單也加上對應檢查項。
+
+**未手動修 photosynthesis sample**——這條規則是 xreview 後新加的、本次 sample 不算 retroactive violation。下個迭代或下個 sprint 重跑時新規則自動生效。
+
+### v4 修補影響範圍
+
+| 檔案 | 變更 |
+|---|---|
+| `docs/0001-skeleton/spec.md` | AC-5 改寫加入 95-200 容忍範圍 + 新增 ADR-7 |
+| `references/AGENTS.md` | §4 表格 + 量級規則改為 95-200 + 加 unique source 規則 |
+| `agents/edu-researcher.md` | 硬性上限表加目標欄 + 改下限為 95 + 新增 unique source 列 + 輸出前核對加第 5 條 |
+| `skills/edu.research/SKILL.md` | line 104 改 ${CLAUDE_PLUGIN_ROOT} + 路徑變數說明加防回滾警語 + 派工 prompt 範本最後一段同步新規則 |
+| `docs/0001-skeleton/works.md` | 本段紀錄 |
+| `docs/0001-skeleton/tasks.md` | （無動）xreview 不在 task list 中 |
+| `lessons/*/topic.research.md` | （無動）規則放寬後 sample 自動合規 |
+
+### v4 結束狀態
+
+- F1 / F2 / F3 全部修補完成
+- 19 個 sample 概念依新規則 100% 合規
+- 沒有殘留 bare 路徑
+- 新規則防回滾警語就位
+- 等待使用者明確同意後 commit follow-up patch

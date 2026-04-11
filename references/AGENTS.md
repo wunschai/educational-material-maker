@@ -51,7 +51,7 @@
 | Metadata block | 必填 | `slug` / `generated`（ISO 8601）/ `source mode`（`web` 或 `files`）/ `depth`（`medium`） |
 | 學習關鍵字 | 必填 | unordered list，3-8 個 |
 | 子問題拆解 | 必填 | researcher 在搜尋前拆出的 4-6 個探索方向 |
-| 核心概念 | 必填 | 5-8 個概念，每個 100-200 字 |
+| 核心概念 | 必填 | 5-8 個概念，每個目標 100-200 字（硬性容忍 95-200） |
 | 常見誤解 | **選填** | 若主題沒有典型誤解可省略 |
 | Open Questions | **選填** | researcher 認為都答完了可省略 |
 | 引用 | 必填 | footnote 格式，5-10 條 |
@@ -59,9 +59,9 @@
 **內容量級規則**（亦為硬規格）：
 
 - 核心概念數量：5 ≤ N ≤ 8
-- 每個核心概念字數：100 ≤ words ≤ 200（zh-TW 字元數約等於 words）
+- 每個核心概念字數：**目標 100-200**，硬性容忍範圍 **95 ≤ words ≤ 200**（zh-TW 字元數約等於 words）。下限 95 為 xreview 後放寬，理由見 spec.md ADR-7。
 - 引用數量：5 ≤ N ≤ 10
-- 每個核心概念至少有 1 個 footnote 引用
+- 每個核心概念至少有 1 個 footnote 引用，且**至少 1 個 unique source**（同一 footnote 在同一概念內重複標記不計為額外引用，例如 `[^3][^3]` 等同單一來源）
 
 ## 5. Subagent 使用原則
 

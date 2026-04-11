@@ -33,7 +33,7 @@
 - [ ] AC-2：執行 `/edu.research 光合作用 --slug=photosynthesis-101` 會以 `photosynthesis-101` 為資料夾名稱（明確指定永遠優先於自動生成）。
 - [ ] AC-3：若 `lessons/<slug>/` 已存在 `topic.research.md`，slash command 會中止並提示使用者用 `--force` 才能覆寫；本 sprint 不需要實作 `--force`，但要實作中止行為。
 - [ ] AC-4：`topic.research.md` 結構符合 §「介面/資料結構 — topic.research.md schema」所定義的章節順序與必填項。
-- [ ] AC-5：研究內容包含 5-8 個核心概念，每個概念說明 100-200 字（zh-TW），引用 5-10 件來源。
+- [ ] AC-5：研究內容包含 5-8 個核心概念，每個概念說明字數**目標 100-200 字**（zh-TW），硬性容忍範圍 **95-200 字**（容忍下限 95 為 xreview 後放寬，理由見 ADR-7），引用 5-10 件來源。
 - [ ] AC-6：研究流程透過 `edu-researcher` subagent 執行（main agent 用 Task tool 派工，不在 main context 內直接做 web search）。
 - [ ] AC-7：每個核心概念至少有一個 footnote 引用，引用區包含 URL 與存取日期。
 - [ ] AC-8：plugin metadata (`.claude-plugin/plugin.json`) 完整，能被 `claude plugin add` 安裝（路徑指向本地目錄）。
@@ -248,6 +248,19 @@ researcher 認為值得進一步釐清、但本輪未解決的問題：
 - **決策**：`scripts/` 資料夾在本 sprint 不建立。
 - **原因**：本 sprint 不做 slides 與渲染，無 marp/edge-tts/playwright/ffmpeg 的使用需求。Sprint 0002 才需要第一個 wrapper script。
 - **替代方案**：先建空殼。違反 YAGNI。
+
+### ADR-7：放寬核心概念字數下限 100 → 95（xreview 後加入）
+
+- **決策**：核心概念字數從硬限 `100 ≤ words ≤ 200` 改為「目標 100-200，硬性容忍 95-200」。上限維持 200 不動。
+- **觸發事件**：xreview 階段發現 `lessons/photosynthesis-101/topic.research.md` 概念 4 = 99 字（差 1 字），但內容品質已達教學可用程度。三個 sample 共 19 個概念，其中只有這 1 個越過下限、最大字數 165 遠未碰上限。
+- **原因**：
+  1. 100 是當初拍腦袋的整數，沒有教育學或語言學依據；99 vs 100 對教學可用性的差別是 zero。
+  2. 把硬下限定得剛好等於目標下緣，等於要求 LLM 100% 命中目標下緣，不留任何裁剪/重寫的空間。實務上 LLM 在 95-100 區間的判斷常常不穩定。
+  3. 上限沒被破過（最大 165），維持 200 即可，不需要對稱放寬到 ±5%。
+- **本次同步修補**：`references/AGENTS.md` §4 表格、`agents/edu-researcher.md` 第四步「硬性上限」表都同步改為 `95-200`，並標註目標仍是 100-200。
+- **替代方案**：
+  1. 對稱放寬為 [95, 210] —— 沒必要，上限沒問題。
+  2. 維持 100，手動補字到 photosynthesis-101 概念 4 —— 治標不治本，下次仍會在邊緣翻車。
 
 ### ADR-6：Sprint 0001 採用單一固定 schema，未來引入 schema profile 機制
 
