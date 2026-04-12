@@ -58,11 +58,15 @@ def screenshot_slides(html_path: str, frames_dir: Path, width: int, height: int)
             browser.close()
             sys.exit(1)
 
+        # Marp HTML uses presentation mode — slides are NOT vertically stacked.
+        # Navigate using keyboard ArrowRight (most reliable across Marp versions).
+        # First slide is already visible after page load.
         for i in range(slide_count):
-            page.evaluate(f"document.querySelectorAll('section')[{i}].scrollIntoView()")
-            page.wait_for_timeout(300)
+            if i > 0:
+                page.keyboard.press("ArrowRight")
+            page.wait_for_timeout(500)
             out = frames_dir / f"slide-{i + 1:02d}.png"
-            page.screenshot(path=str(out), clip={"x": 0, "y": 0, "width": width, "height": height})
+            page.screenshot(path=str(out))
             print(f"  Screenshot: {out.name}")
 
         browser.close()
