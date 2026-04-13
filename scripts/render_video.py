@@ -276,7 +276,7 @@ def main() -> None:
         sub_cmd = [
             "ffmpeg", "-y",
             "-i", output_path.name,
-            "-vf", "subtitles=temp_subs.srt:force_style='FontSize=20,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,MarginV=30'",
+            "-vf", "subtitles=temp_subs.srt:force_style='FontSize=18,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=1,MarginV=20'",
             "-c:a", "copy",
             subtitled_output.name,
         ]
