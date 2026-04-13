@@ -208,19 +208,28 @@ def main() -> None:
     frames_dir = lesson_dir / "frames"
     segments_dir = lesson_dir / "segments"
 
-    # If infographics/ exists, use it instead of Playwright screenshots
-    if infographics_dir.exists() and any(infographics_dir.glob("slide-*.png")):
-        print(f"[1/4] Using infographics/ (skipping Playwright screenshots)...")
-        frames_dir = infographics_dir
-        slide_count = len(list(infographics_dir.glob("slide-*.png")))
-        print(f"  {slide_count} infographic pages found")
-        # ffmpeg needs consistent resolution — scale infographics in compose step
-        use_infographics = True
-    else:
-        print(f"[1/4] Screenshotting slides ({width}x{height})...")
-        slide_count = screenshot_slides(str(html_path), frames_dir, width, height)
-        print(f"  {slide_count} slides captured")
-        use_infographics = False
+    # Hybrid mode: use infographics where available, Playwright screenshots for the rest
+    has_infographics = infographics_dir.exists() and any(infographics_dir.glob("slide-*.png"))
+
+    print(f"[1/4] Capturing slide frames ({width}x{height})...")
+    # Always screenshot ALL slides via Playwright first
+    slide_count = screenshot_slides(str(html_path), frames_dir, width, height)
+    print(f"  {slide_count} slides screenshotted")
+
+    # Then overlay infographics where they exist
+    use_infographics = False
+    if has_infographics:
+        infographic_files = sorted(infographics_dir.glob("slide-*.png"))
+        replaced = 0
+        for inf in infographic_files:
+            target = frames_dir / inf.name
+            if target.exists():
+                target.unlink()
+            import shutil as _sh
+            _sh.copy2(inf, target)
+            replaced += 1
+        print(f"  {replaced} pages replaced with infographics (hybrid mode)")
+        use_infographics = replaced > 0
 
     print("[2/4] Composing segments (PNG + MP3 → MP4)...")
     segment_paths = compose_segments(
@@ -236,9 +245,9 @@ def main() -> None:
     concat_segments(segment_paths, output_path)
 
     print("[4/4] Cleaning up intermediate files...")
-    # Don't delete infographics/ — it's user-generated content, not intermediate
-    if not use_infographics:
-        shutil.rmtree(frames_dir, ignore_errors=True)
+    # Always delete frames/ (screenshots + copied infographics = intermediate)
+    # Never delete infographics/ (user-generated content)
+    shutil.rmtree(frames_dir, ignore_errors=True)
     shutil.rmtree(segments_dir, ignore_errors=True)
 
     if output_path.exists():
