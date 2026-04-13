@@ -114,7 +114,7 @@ def compose_segments(
             continue
 
         # Build video filter for scaling if using infographics (variable resolution)
-        vf = "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" if scale_to else None
+        vf = f"scale={scale_to}:force_original_aspect_ratio=decrease,pad={scale_to}:(ow-iw)/2:(oh-ih)/2" if scale_to else None
 
         if audio.exists():
             duration = get_audio_duration(str(audio)) + buffer

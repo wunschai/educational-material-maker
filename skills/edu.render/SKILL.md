@@ -84,7 +84,7 @@ py ${CLAUDE_PLUGIN_ROOT}/scripts/render_video.py \
 
 - ❌ 不用 Playwright page.video 錄影（ADR-12：截圖 + ffmpeg）
 - ❌ 不加 transition / fade（MVP 硬切）
-- ❌ 不加字幕 / SRT
+- ✅ 自動偵測 `subtitles/*.srt` 並燒入字幕（白字黑邊、底部置中）
 - ❌ 不加背景音樂
 - ❌ 不靜默覆寫已存在的 dist/
 - ❌ 不上傳到任何外部服務

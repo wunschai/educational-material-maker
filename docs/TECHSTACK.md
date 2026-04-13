@@ -22,8 +22,9 @@ educational_material_maker/
 ├── scripts/                     # 本地工具的 wrapper（被 skill 透過 Bash 呼叫）
 │   ├── build_slides.sh          # marp-cli wrapper
 │   ├── synthesize_tts.py        # edge-tts wrapper
-│   ├── record_slides.py         # playwright 螢幕錄製
-│   └── compose_video.sh         # ffmpeg 拼接
+│   ├── render_video.py          # playwright 截圖 + ffmpeg 合成 mp4
+│   ├── generate_subtitles.py    # 合併 per-slide SRT 為最終字幕
+│   └── batch_infographic.py     # NotebookLM 批次資訊圖表生成
 ├── references/
 │   └── AGENTS.md                # 共用指令檔（coding style、命名）
 ├── docs/                        # DDD 文件包
@@ -68,7 +69,7 @@ educational_material_maker/
 /edu.research <topic>     →  lessons/<slug>/topic.research.md
 /edu.outline <slug>       →  lessons/<slug>/outline.md
 /edu.slides <slug>        →  lessons/<slug>/slides.md
-/edu.narrate <slug>       →  lessons/<slug>/narration/*.md + audio/*.mp3
+/edu.narrate <slug>       →  lessons/<slug>/narration/*.txt + audio/*.mp3
 /edu.render <slug>        →  lessons/<slug>/dist/<slug>.mp4
 ```
 

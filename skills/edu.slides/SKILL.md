@@ -324,7 +324,7 @@ p { font-size: 28px; }
 
 #### MCP 圖表生成規則（Sprint 0004 新增）
 
-如果 session 中有 MCP chart / mermaid tools 可用，**在生成 slides 之前**先為適合的概念生成結構性圖表，存到 `lessons/<slug>/diagrams/`，然後在 slides.md 中用 `![bg right:45%](diagrams/xxx.png)` 嵌入。
+如果 session 中有 MCP chart / mermaid tools 可用，**在生成 slides 之前**先為適合的概念生成結構性圖表，存到 `lessons/<slug>/diagrams/`，然後在 slides.md 中用 `![w:1100](diagrams/xxx.png)` 行內嵌入（獨佔整頁）。
 
 **何時生成圖表**（判斷指引）：
 
@@ -374,7 +374,7 @@ p { font-size: 28px; }
 
 | | 照片 | MCP 圖表 |
 |---|---|---|
-| 嵌入語法 | `![bg right:40%](url)` | `![bg contain](diagrams/x.png)` |
+| 嵌入語法 | `![bg right:40%](url)` | `![w:1100](diagrams/x.png)`（行內圖，獨佔整頁） |
 | 是否與文字同頁 | ✅ 是（照片是背景） | ❌ 否（圖表獨佔一頁） |
 | 原因 | 照片是氛圍、文字是主角 | 圖表本身就是內容，需要全頁空間才能看清楚 |
 
@@ -513,9 +513,9 @@ with sync_playwright() as p:
 - ❌ 不走 subagent 產出 slides（ADR-8）
 - ❌ 不做 web search（事實只來自 research.md）
 - ❌ 不靜默覆寫已存在的 slides.md
-- ❌ 不處理圖片 / 影片嵌入
+- ✅ 搜尋圖片嵌入章節封面（WebSearch + Unsplash/Wikimedia）+ MCP 圖表生成
 - ❌ 不解析 speaker notes 為音檔（那是 Sprint 0003 `/edu.narrate`）
-- ❌ 不自動呼叫 build_slides.sh（使用者手動呼叫或等 Sprint 0003）
+- ✅ Step 5.5 視覺自審時自動呼叫 build_slides.sh + Playwright 截圖檢查
 
 ## Sprint 0002 註解
 

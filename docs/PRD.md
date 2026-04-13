@@ -30,7 +30,7 @@
   - `topic.research.md`：分點摘要 + 引用清單
   - `outline.md`：教學目標、章節骨架
   - `slides.md`：Marp markdown
-  - `narration/*.md`：逐頁講稿
+  - `narration/*.txt`：逐頁講稿
   - `audio/*.mp3`：Edge-TTS 合成
   - `dist/<lesson>.mp4`：最終影片
 - 階段化 slash commands，使用者可在任一階段中斷、修改、重跑下一階段。
