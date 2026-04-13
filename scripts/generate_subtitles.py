@@ -10,6 +10,8 @@ Each slide becomes one SRT entry spanning the audio duration.
 
 import argparse
 import json
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -32,6 +34,50 @@ def format_srt_time(seconds: float) -> str:
     s = int(seconds % 60)
     ms = int((seconds % 1) * 1000)
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def split_into_subtitle_lines(text: str, max_chars: int = 20) -> list[str]:
+    """Split text into subtitle-sized chunks (max 1 line, ~max_chars per line).
+
+    Splits at Chinese sentence boundaries (。！？；) first,
+    then at commas (，、), then hard-wraps long segments.
+    """
+    if not text.strip():
+        return []
+
+    # Split at sentence boundaries
+    sentences = re.split(r'(?<=[。！？；\.\!\?])', text.strip())
+    sentences = [s.strip() for s in sentences if s.strip()]
+
+    # Further split long sentences at commas
+    chunks = []
+    for sent in sentences:
+        if len(sent) <= max_chars:
+            chunks.append(sent)
+        else:
+            # Split at commas
+            parts = re.split(r'(?<=[，、,])', sent)
+            current = ""
+            for part in parts:
+                if len(current + part) <= max_chars:
+                    current += part
+                else:
+                    if current:
+                        chunks.append(current.strip())
+                    current = part
+            if current:
+                chunks.append(current.strip())
+
+    # Hard-wrap any remaining long chunks
+    final = []
+    for chunk in chunks:
+        while len(chunk) > max_chars:
+            final.append(chunk[:max_chars])
+            chunk = chunk[max_chars:]
+        if chunk:
+            final.append(chunk)
+
+    return final
 
 
 def main():
@@ -63,32 +109,43 @@ def main():
 
     entries = []
     current_time = 0.0
+    max_chars = int(os.environ.get("SUBTITLE_MAX_CHARS", "20"))
 
     for txt_file in txt_files:
         # Extract slide number regardless of suffix (slide-01.original → slide-01)
         slide_num = txt_file.stem.split(".")[0]  # e.g., "slide-01"
         text = txt_file.read_text(encoding="utf-8").strip()
-        if not text:
-            # Silent slide — still advance timing
-            mp3 = audio_dir / f"{slide_num}.mp3"
-            duration = get_audio_duration(mp3) if mp3.exists() else 3.0
-            current_time += duration + 1.5
-            continue
 
         mp3 = audio_dir / f"{slide_num}.mp3"
         duration = get_audio_duration(mp3) if mp3.exists() else 3.0
 
-        start = current_time
-        end = current_time + duration
+        if not text:
+            current_time += duration + 1.5
+            continue
 
-        entries.append({
-            "index": len(entries) + 1,
-            "start": format_srt_time(start),
-            "end": format_srt_time(end),
-            "text": text,
-        })
+        # Split into short subtitle lines
+        lines = split_into_subtitle_lines(text, max_chars=max_chars)
+        if not lines:
+            current_time += duration + 1.5
+            continue
 
-        current_time = end + 1.5  # buffer between slides
+        # Distribute timing proportionally by character count
+        total_chars = sum(len(line) for line in lines)
+        slide_start = current_time
+
+        for line in lines:
+            char_ratio = len(line) / total_chars if total_chars > 0 else 1.0 / len(lines)
+            line_duration = max(duration * char_ratio, 1.0)  # at least 1 second per line
+
+            entries.append({
+                "index": len(entries) + 1,
+                "start": format_srt_time(current_time),
+                "end": format_srt_time(current_time + line_duration),
+                "text": line,
+            })
+            current_time += line_duration
+
+        current_time = slide_start + duration + 1.5  # align to actual audio end + buffer
 
     # Write SRT
     output_path.parent.mkdir(parents=True, exist_ok=True)
