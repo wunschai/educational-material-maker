@@ -204,6 +204,7 @@ section.summary {
 section.summary h2 { color: var(--color-accent-light); text-align: center; margin-bottom: 20px; }
 section.summary li { font-size: 1.05em; margin-bottom: 10px; }
 section.summary li::marker { color: var(--color-accent-light); }
+section.summary strong { color: white; }
 
 /* ————————————————————————————
    6. cols — 雙欄佈局（Canva 風格）
