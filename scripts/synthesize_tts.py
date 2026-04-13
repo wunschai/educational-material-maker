@@ -14,11 +14,26 @@ import sys
 from pathlib import Path
 
 
-async def synthesize(text: str, output: str, voice: str) -> None:
+async def synthesize(text: str, output: str, voice: str, srt_output: str | None = None) -> None:
     import edge_tts
 
     communicate = edge_tts.Communicate(text, voice)
-    await communicate.save(output)
+
+    if srt_output:
+        # Stream mode: capture audio + word boundary timing for subtitles
+        submaker = edge_tts.SubMaker()
+        with open(output, "wb") as audio_file:
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    audio_file.write(chunk["data"])
+                else:
+                    submaker.feed(chunk)
+        # Write SRT with real speech timing from Edge-TTS word boundaries
+        srt_content = submaker.get_srt()
+        Path(srt_output).parent.mkdir(parents=True, exist_ok=True)
+        Path(srt_output).write_text(srt_content, encoding="utf-8")
+    else:
+        await communicate.save(output)
 
 
 def main() -> None:
@@ -29,6 +44,11 @@ def main() -> None:
         "--voice",
         default="zh-TW-HsiaoChenNeural",
         help="Edge-TTS voice ID (default: zh-TW-HsiaoChenNeural)",
+    )
+    parser.add_argument(
+        "--srt",
+        default=None,
+        help="Output SRT subtitle file (uses Edge-TTS word boundary timing for exact sync)",
     )
     args = parser.parse_args()
 
@@ -46,7 +66,7 @@ def main() -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        asyncio.run(synthesize(text, str(output_path), args.voice))
+        asyncio.run(synthesize(text, str(output_path), args.voice, srt_output=args.srt))
     except Exception as e:
         print(f"Error: TTS failed: {e}", file=sys.stderr)
         sys.exit(1)
