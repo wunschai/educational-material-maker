@@ -18,6 +18,7 @@ Dependencies:
 
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -212,23 +213,41 @@ def main() -> None:
     # Hybrid mode: use infographics where available, Playwright screenshots for the rest
     has_infographics = infographics_dir.exists() and any(infographics_dir.glob("slide-*.png"))
 
-    print(f"[1/4] Capturing slide frames ({width}x{height})...")
-    # Always screenshot ALL slides via Playwright first
-    slide_count = screenshot_slides(str(html_path), frames_dir, width, height)
-    print(f"  {slide_count} slides screenshotted")
+    # Determine actual page count from audio files (authoritative source)
+    # Marp DOM may have extra sections (bespoke buffer), but audio count = real page count
+    audio_files = sorted(audio_dir.glob("slide-*.mp3"))
+    real_page_count = len(audio_files) if audio_files else None
 
-    # Then overlay infographics where they exist
+    print(f"[1/4] Capturing slide frames ({width}x{height})...")
+    dom_section_count = screenshot_slides(str(html_path), frames_dir, width, height)
+
+    # Trim to real page count if we have audio to reference
+    if real_page_count and real_page_count < dom_section_count:
+        print(f"  {dom_section_count} DOM sections, trimming to {real_page_count} real pages (matching audio count)")
+        # Delete extra screenshots
+        for i in range(real_page_count + 1, dom_section_count + 1):
+            extra = frames_dir / f"slide-{i:02d}.png"
+            extra.unlink(missing_ok=True)
+        slide_count = real_page_count
+    else:
+        slide_count = dom_section_count
+    print(f"  {slide_count} slides to render")
+
+    # Overlay infographics where they exist
     use_infographics = False
     if has_infographics:
         infographic_files = sorted(infographics_dir.glob("slide-*.png"))
         replaced = 0
         for inf in infographic_files:
-            target = frames_dir / inf.name
-            if target.exists():
-                target.unlink()
-            import shutil as _sh
-            _sh.copy2(inf, target)
-            replaced += 1
+            # Only overlay if within real page count
+            num_match = re.search(r"slide-(\d+)", inf.stem)
+            if num_match and int(num_match.group(1)) <= slide_count:
+                target = frames_dir / inf.name
+                if target.exists():
+                    target.unlink()
+                import shutil as _sh
+                _sh.copy2(inf, target)
+                replaced += 1
         print(f"  {replaced} pages replaced with infographics (hybrid mode)")
         use_infographics = replaced > 0
 
