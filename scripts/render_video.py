@@ -187,6 +187,7 @@ def main() -> None:
     parser.add_argument("audio_dir", help="audio/ directory with slide-NN.mp3 files")
     parser.add_argument("output", help="output mp4 path")
     parser.add_argument("--resolution", default="1280x720", help="WxH (default: 1280x720)")
+    parser.add_argument("--subtitles", default=None, help="SRT subtitle file to burn in")
     args = parser.parse_args()
 
     check_dependencies()
@@ -243,6 +244,34 @@ def main() -> None:
 
     print("[3/4] Concatenating segments...")
     concat_segments(segment_paths, output_path)
+
+    # [3.5] Burn subtitles if provided
+    if args.subtitles and Path(args.subtitles).exists():
+        print(f"[3.5] Burning subtitles: {args.subtitles}")
+        subtitled_output = output_path.with_stem(output_path.stem + "-sub")
+        # Copy SRT next to the output mp4 to avoid Windows path escaping issues
+        # ffmpeg subtitles filter struggles with colons/backslashes in absolute paths
+        local_srt = output_path.parent / "temp_subs.srt"
+        shutil.copy2(Path(args.subtitles), local_srt)
+        # Run ffmpeg from the output directory so relative path works
+        sub_cmd = [
+            "ffmpeg", "-y",
+            "-i", output_path.name,
+            "-vf", "subtitles=temp_subs.srt:force_style='FontSize=20,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,MarginV=30'",
+            "-c:a", "copy",
+            subtitled_output.name,
+        ]
+        result = subprocess.run(sub_cmd, capture_output=True, text=True, cwd=str(output_path.parent))
+        local_srt.unlink(missing_ok=True)
+        if result.returncode == 0 and subtitled_output.exists():
+            output_path.unlink()
+            subtitled_output.rename(output_path)
+            print(f"  Subtitles burned in successfully")
+        else:
+            print(f"  Warning: subtitle burn failed, keeping video without subs", file=sys.stderr)
+            if result.stderr:
+                print(f"  {result.stderr[:200]}", file=sys.stderr)
+            subtitled_output.unlink(missing_ok=True)
 
     print("[4/4] Cleaning up intermediate files...")
     # Always delete frames/ (screenshots + copied infographics = intermediate)

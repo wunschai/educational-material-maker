@@ -37,19 +37,26 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/build_slides.sh lessons/<slug>/slides.md
 
 ### Step 2：呼叫 render script
 
+檢查 `lessons/<slug>/subtitles/` 是否有 SRT 檔——如果有，自動帶 `--subtitles` 參數燒入字幕：
+
 ```bash
+# 偵測字幕
+SRT_FILE=$(ls lessons/<slug>/subtitles/*.srt 2>/dev/null | head -1)
+
 py ${CLAUDE_PLUGIN_ROOT}/scripts/render_video.py \
     lessons/<slug>/slides.html \
     lessons/<slug>/audio \
     lessons/<slug>/dist/<slug>.mp4 \
-    --resolution <resolution>
+    --resolution <resolution> \
+    ${SRT_FILE:+--subtitles "$SRT_FILE"}
 ```
 
 等待完成。script 內部流程：
-1. Playwright 截圖 → frames/slide-NN.png
+1. Playwright 截圖 → frames/slide-NN.png（或 hybrid 用 infographics/）
 2. ffmpeg 逐段合成 → segments/seg-NN.mp4
 3. ffmpeg concat → dist/<slug>.mp4
-4. 自動清理 frames/ 和 segments/
+4. 如果有 --subtitles → ffmpeg 燒入 SRT 字幕（白字黑邊、底部置中）
+5. 自動清理 frames/ 和 segments/
 
 ### Step 3：驗證產出
 
