@@ -102,19 +102,52 @@ Speaker notes: <2-3 句講課稿>
 2. <來源 2> — <URL>
 ```
 
-#### 版型 class 使用規則（edu-default theme）
+#### 版型 class 使用規則（edu-default theme v2）
 
-slides.md 中透過 `<!-- _class: xxx -->` 切換版型。**必須使用以下 class**：
+slides.md 中透過 `<!-- _class: xxx -->` 切換版型。有 14 種 class 可用，分為「必用」「推薦」「選用」三層：
+
+**必用（每份簡報都要出現）**：
 
 | Class | 用在哪 | 效果 |
 |---|---|---|
-| `lead` | **標題頁 + 章節封面頁**（必用） | 深藍漸層背景、白字、置中大標題 |
-| `invert` | 強調頁 / 對比頁 | 深色底、白字 |
-| `quote` | 引言 / 名言 / 定義頁 | 大字引言框、灰底 |
-| `card` | 重點整理頁 | 白色卡片風、圓角陰影 |
-| `summary` | **總結頁**（必用） | 深藍漸層 + 橘色重點 |
+| `lead` | 標題頁 + 每個章節封面 | 深藍漸層、白字居中 |
+| `summary` | 最後一頁「今日重點」 | 深藍漸層 + 橘色重點列表 |
 
-**版型節奏建議**：不是每頁都要加 class。一般內容頁不加（用預設白底藍字），class 用於**節奏變化**——大約每 4-5 頁穿插一次 class 頁，避免視覺疲勞。
+**推薦（大部分簡報應使用 3-5 種）**：
+
+| Class | 用在哪 | 效果 | HTML 結構 |
+|---|---|---|---|
+| `cols` | 兩個概念並列 | 左右 1:1 雙欄 | `<div class="left">` + `<div class="right">` |
+| `comparison` | A vs B 對比 | 左右 + VS 分隔 | `<div class="vs-left">` + `<div class="vs-divider">VS</div>` + `<div class="vs-right">` |
+| `highlight-box` | 重點條列 | 左色條白卡片 | 直接用 `- bullet` 即可 |
+| `key-point` | 單一核心訊息 | 大字居中 | 標題 + 一段文字 |
+| `quote` | 引言/定義 | 灰底大字引言框 | 用 `> blockquote` |
+| `process` | 步驟/流程 | 水平圓圈步驟 | `<div class="steps"><div class="step"><div class="step-num">1</div><div class="step-text">...</div></div>...</div>` |
+
+**選用（特定內容才用）**：
+
+| Class | 用在哪 | HTML 結構 |
+|---|---|---|
+| `cols-3` | 三項並排比較 | `<div class="c1">` + `<div class="c2">` + `<div class="c3">` |
+| `big-number` | 統計數字強調 | `<div class="number">85%</div><div class="label">說明</div>` |
+| `card` | 多卡片排列 | 每個子元素自動變白卡 |
+| `invert` | 深色強調 | 直接用 |
+| `agenda` | 課程大綱列表 | 用 `1. 2. 3.` 有序列表 |
+| `full-image` | 全幅背景圖+文字 | 搭配 `![bg](url)` |
+| `bg-warm` | 暖色背景 | 可與其他 class 組合 |
+
+**版型節奏規則**：
+
+1. **不是每頁都加 class**——一般內容頁不加（預設白底藍字已夠好）
+2. **每 2-3 頁穿插一次版型變化**——避免視覺疲勞
+3. **同一種 class 不要連續出現兩次**——例如不要連續兩頁 `cols`
+4. **版型要匹配內容**：
+   - 有 A vs B → 用 `comparison`
+   - 有步驟流程 → 用 `process`
+   - 有一句核心結論 → 用 `key-point`
+   - 有多項重點 → 用 `highlight-box`
+   - 有數據 → 用 `big-number`
+   - 千萬不要**硬套不匹配的版型**——內容是普通列表就用預設版面
 
 #### 圖片嵌入規則（Sprint 0004 新增）
 

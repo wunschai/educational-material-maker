@@ -3,165 +3,140 @@
  * @auto-scaling fittingHeader
  * @size 16:9 1280px 720px
  *
- * Educational Material Maker 預設主題
- * 設計原則：清晰可讀、教學導向、柔和配色
+ * Educational Material Maker 預設主題 v2
+ * 設計參考：Canva Education / PPT Professional 模板
+ * 原則：版型豐富但風格一致、教學導向、清晰可讀
  */
 
 @import 'default';
 
+/* ===== Google Fonts (Noto Sans TC) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
 :root {
-  /* 主色系：深藍 + 暖橘強調 */
-  --color-primary: #1e3a5f;
+  /* 主色系 */
+  --color-primary: #1a365d;
   --color-primary-light: #2c5282;
+  --color-primary-dark: #0f2440;
   --color-accent: #e67e22;
   --color-accent-light: #f0a050;
+
+  /* 輔助色（章節色彩編碼用） */
+  --color-teal: #2d8a8a;
+  --color-green: #38a169;
+  --color-purple: #6b46c1;
+  --color-rose: #c53030;
+  --color-indigo: #4c51bf;
+
+  /* 中性色 */
   --color-bg: #fafbfc;
   --color-bg-alt: #eef2f7;
+  --color-bg-warm: #fdf6ec;
   --color-text: #2d3748;
   --color-text-light: #718096;
+  --color-text-muted: #a0aec0;
   --color-border: #cbd5e0;
-  --color-success: #38a169;
-  --color-warning: #d69e2e;
+  --color-border-light: #e2e8f0;
 
   /* 字型 */
   --font-main: 'Noto Sans TC', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
   --font-mono: 'Fira Code', 'Consolas', monospace;
 }
 
-/* ===== 基底 slide ===== */
+/* ============================================================
+   基底 SLIDE
+   ============================================================ */
 
 section {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-main);
-  font-size: 28px;
-  line-height: 1.6;
+  font-size: 26px;
+  line-height: 1.7;
   padding: 50px 60px;
+  letter-spacing: 0.02em;
 }
 
 section::after {
-  /* 頁碼樣式 */
-  color: var(--color-text-light);
-  font-size: 16px;
+  color: var(--color-text-muted);
+  font-size: 14px;
 }
 
-/* ===== 標題 ===== */
+/* ===== 標題層次 ===== */
 
 h1 {
   color: var(--color-primary);
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 700;
   border-bottom: 3px solid var(--color-accent);
-  padding-bottom: 12px;
-  margin-bottom: 24px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 h2 {
   color: var(--color-primary);
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 h3 {
   color: var(--color-primary-light);
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
 }
 
-/* ===== 列表 ===== */
-
-ul, ol {
-  margin-left: 0.5em;
-}
-
-li {
-  margin-bottom: 8px;
-}
-
-li::marker {
+h4 {
   color: var(--color-accent);
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* ===== 強調文字 ===== */
+/* ===== 文字樣式 ===== */
 
-strong {
-  color: var(--color-primary);
+strong { color: var(--color-primary); }
+em { color: var(--color-accent); font-style: normal; font-weight: 600; }
+
+ul, ol { margin-left: 0.3em; }
+li { margin-bottom: 6px; }
+li::marker { color: var(--color-accent); font-weight: bold; }
+
+blockquote {
+  border-left: 4px solid var(--color-accent);
+  background: var(--color-bg-alt);
+  padding: 14px 22px;
+  margin: 14px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.92em;
 }
-
-em {
-  color: var(--color-accent);
-  font-style: normal;
-  font-weight: 600;
-}
-
-/* ===== 程式碼 ===== */
 
 code {
   background: var(--color-bg-alt);
   color: var(--color-primary);
   font-family: var(--font-mono);
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 0.85em;
-}
-
-pre code {
-  padding: 16px;
-  border-left: 4px solid var(--color-accent);
-}
-
-/* ===== 引用區塊 ===== */
-
-blockquote {
-  border-left: 4px solid var(--color-accent);
-  background: var(--color-bg-alt);
-  padding: 16px 24px;
-  margin: 16px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.95em;
-  color: var(--color-text);
+  font-size: 0.82em;
 }
 
 /* ===== 表格 ===== */
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 0.9em;
-}
+table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
+th { background: var(--color-primary); color: white; padding: 8px 14px; text-align: left; }
+td { padding: 7px 14px; border-bottom: 1px solid var(--color-border-light); }
+tr:nth-child(even) td { background: var(--color-bg-alt); }
 
-th {
-  background: var(--color-primary);
-  color: white;
-  padding: 10px 16px;
-  text-align: left;
-}
-
-td {
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-tr:nth-child(even) td {
-  background: var(--color-bg-alt);
-}
-
-/* ===== 分隔線 ===== */
-
-hr {
-  border: none;
-  border-top: 2px solid var(--color-border);
-  margin: 24px 0;
-}
+hr { border: none; border-top: 2px solid var(--color-border-light); margin: 20px 0; }
 
 /* ============================================================
-   LAYOUT CLASSES — 在 slides.md 裡用 <!-- _class: xxx --> 啟用
+   LAYOUT CLASSES — <!-- _class: xxx --> 啟用
    ============================================================ */
 
-/* ----- lead: 標題頁 / 章節封面 ----- */
-
+/* ————————————————————————————
+   1. lead — 標題頁 / 章節封面
+   ———————————————————————————— */
 section.lead {
   display: flex;
   flex-direction: column;
@@ -171,43 +146,24 @@ section.lead {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
   color: white;
 }
+section.lead h1 { color: white; border-bottom-color: var(--color-accent); font-size: 48px; }
+section.lead h2 { color: rgba(255,255,255,0.85); font-weight: 400; font-size: 26px; }
+section.lead p { color: rgba(255,255,255,0.7); font-size: 20px; }
 
-section.lead h1 {
-  color: white;
-  border-bottom: 3px solid var(--color-accent);
-  font-size: 52px;
-}
-
-section.lead h2 {
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 400;
-  font-size: 28px;
-}
-
-section.lead p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 22px;
-}
-
-/* ----- invert: 深色底 ----- */
-
+/* ————————————————————————————
+   2. invert — 深色底
+   ———————————————————————————— */
 section.invert {
-  background: var(--color-primary);
+  background: var(--color-primary-dark);
   color: #e2e8f0;
 }
+section.invert h1, section.invert h2, section.invert h3 { color: white; }
+section.invert h1 { border-bottom-color: var(--color-accent); }
+section.invert li::marker { color: var(--color-accent-light); }
 
-section.invert h1,
-section.invert h2,
-section.invert h3 {
-  color: white;
-}
-
-section.invert h1 {
-  border-bottom-color: var(--color-accent);
-}
-
-/* ----- quote: 大引言頁 ----- */
-
+/* ————————————————————————————
+   3. quote — 引言頁
+   ———————————————————————————— */
 section.quote {
   display: flex;
   flex-direction: column;
@@ -215,81 +171,305 @@ section.quote {
   padding: 60px 80px;
   background: var(--color-bg-alt);
 }
-
 section.quote blockquote {
-  font-size: 1.3em;
+  font-size: 1.25em;
   line-height: 1.8;
   border-left-width: 6px;
   background: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-/* ----- card: 重點卡片（整頁變卡片風） ----- */
-
+/* ————————————————————————————
+   4. card — 重點卡片（白色圓角陰影）
+   ———————————————————————————— */
 section.card {
   background: var(--color-bg-alt);
   padding: 40px;
 }
-
 section.card > * {
   background: white;
   border-radius: 12px;
-  padding: 24px 32px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  margin-bottom: 16px;
+  padding: 20px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 12px;
 }
 
-/* ----- summary: 總結頁 ----- */
-
+/* ————————————————————————————
+   5. summary — 總結頁
+   ———————————————————————————— */
 section.summary {
   background: linear-gradient(135deg, var(--color-primary) 0%, #2b4a7a 100%);
   color: white;
 }
+section.summary h2 { color: var(--color-accent-light); text-align: center; margin-bottom: 20px; }
+section.summary li { font-size: 1.05em; margin-bottom: 10px; }
+section.summary li::marker { color: var(--color-accent-light); }
 
-section.summary h2 {
-  color: var(--color-accent-light);
+/* ————————————————————————————
+   6. cols — 雙欄佈局（Canva 風格）
+   使用方式：
+   <!-- _class: cols -->
+   <div class="left">左欄</div>
+   <div class="right">右欄</div>
+   ———————————————————————————— */
+section.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0 40px;
+  padding: 40px 50px;
+}
+section.cols h2 {
+  grid-column: 1 / -1;  /* 標題跨全寬 */
+}
+section.cols .left, section.cols .right {
+  padding: 10px 0;
+}
+
+/* ————————————————————————————
+   7. cols-3 — 三欄佈局
+   <div class="c1">欄1</div>
+   <div class="c2">欄2</div>
+   <div class="c3">欄3</div>
+   ———————————————————————————— */
+section.cols-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0 30px;
+  padding: 40px 50px;
+}
+section.cols-3 h2 { grid-column: 1 / -1; }
+section.cols-3 .c1, section.cols-3 .c2, section.cols-3 .c3 {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+
+/* ————————————————————————————
+   8. big-number — 大數字強調頁
+   使用方式：
+   <!-- _class: big-number -->
+   <div class="number">85%</div>
+   <div class="label">的學生表示...</div>
+   ———————————————————————————— */
+section.big-number {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  background: var(--color-bg);
+}
+section.big-number .number {
+  font-size: 120px;
+  font-weight: 900;
+  color: var(--color-accent);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+section.big-number .label {
+  font-size: 28px;
+  color: var(--color-text);
+  max-width: 70%;
+}
+section.big-number .source {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  margin-top: 20px;
+}
+
+/* ————————————————————————————
+   9. comparison — 對比頁（左 vs 右 + 分隔線）
+   <div class="vs-left">A 方案</div>
+   <div class="vs-divider">VS</div>
+   <div class="vs-right">B 方案</div>
+   ———————————————————————————— */
+section.comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+  padding: 40px 50px;
+  align-items: start;
+}
+section.comparison h2 { grid-column: 1 / -1; }
+section.comparison .vs-left {
+  padding: 20px;
+  background: var(--color-bg-alt);
+  border-radius: 10px 0 0 10px;
+}
+section.comparison .vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-accent);
+  padding: 0 16px;
+  align-self: center;
+}
+section.comparison .vs-right {
+  padding: 20px;
+  background: var(--color-bg-warm);
+  border-radius: 0 10px 10px 0;
+}
+
+/* ————————————————————————————
+   10. key-point — 單一重點頁（大字居中）
+   ———————————————————————————— */
+section.key-point {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 100px;
+  background: var(--color-bg);
+}
+section.key-point h2 {
+  font-size: 38px;
+  color: var(--color-primary);
+  border-bottom: 4px solid var(--color-accent);
+  padding-bottom: 16px;
   margin-bottom: 24px;
 }
+section.key-point p {
+  font-size: 24px;
+  color: var(--color-text);
+  line-height: 1.8;
+  max-width: 80%;
+}
 
-section.summary li {
-  font-size: 1.1em;
+/* ————————————————————————————
+   11. process — 流程/步驟頁（水平步驟）
+   <div class="steps">
+   <div class="step"><div class="step-num">1</div><div class="step-text">第一步</div></div>
+   <div class="step"><div class="step-num">2</div><div class="step-text">第二步</div></div>
+   <div class="step"><div class="step-num">3</div><div class="step-text">第三步</div></div>
+   </div>
+   ———————————————————————————— */
+section.process { padding: 40px 50px; }
+section.process .steps {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 24px;
+  gap: 16px;
+}
+section.process .step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+section.process .step-num {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
   margin-bottom: 12px;
 }
-
-section.summary li::marker {
-  color: var(--color-accent-light);
+section.process .step-text {
+  font-size: 20px;
+  color: var(--color-text);
+  padding: 0 8px;
 }
 
-/* ===== 背景圖片輔助 ===== */
-
-/* 右側圖片區（搭配 ![bg right:40%](url) 使用） */
-section[data-background-image] {
-  /* Marp 原生處理背景圖，這裡只調整文字區的 padding */
+/* ————————————————————————————
+   12. agenda — 議程/大綱頁
+   ———————————————————————————— */
+section.agenda {
+  padding: 40px 60px;
+  background: var(--color-bg);
 }
+section.agenda ol {
+  counter-reset: agenda-counter;
+  list-style: none;
+  padding: 0;
+}
+section.agenda ol li {
+  counter-increment: agenda-counter;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-size: 24px;
+  transition: background 0.2s;
+}
+section.agenda ol li::before {
+  content: counter(agenda-counter, decimal-leading-zero);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-right: 20px;
+  min-width: 50px;
+}
+section.agenda ol li:nth-child(odd) { background: var(--color-bg-alt); }
 
-/* 圖片遮罩（讓文字在圖片上可讀） */
-section.img-overlay {
-  background-size: cover;
-  background-position: center;
+/* ————————————————————————————
+   13. full-image — 全幅背景圖 + 文字疊加
+   搭配 ![bg](url) 使用
+   ———————————————————————————— */
+section.full-image {
   color: white;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px 60px 60px;
 }
-
-section.img-overlay h1,
-section.img-overlay h2 {
+section.full-image h1, section.full-image h2 {
   color: white;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  text-shadow: 0 3px 12px rgba(0,0,0,0.7);
+  border-bottom: none;
+}
+section.full-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+  z-index: 0;
+}
+section.full-image > * { position: relative; z-index: 1; }
+
+/* ————————————————————————————
+   14. highlight-box — 重點框（帶左色條）
+   ———————————————————————————— */
+section.highlight-box { padding: 40px 60px; }
+section.highlight-box > ul, section.highlight-box > ol {
+  list-style: none;
+  padding: 0;
+}
+section.highlight-box > ul > li, section.highlight-box > ol > li {
+  background: white;
+  border-left: 5px solid var(--color-accent);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 22px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
 }
 
-/* ===== footer / header 自訂 ===== */
+/* ============================================================
+   UTILITY CLASSES（可與其他 class 組合）
+   ============================================================ */
 
-header {
-  color: var(--color-text-light);
-  font-size: 14px;
-}
+/* 背景色變化 */
+section.bg-warm { background: var(--color-bg-warm); }
+section.bg-teal { background: var(--color-teal); color: white; }
+section.bg-teal h1, section.bg-teal h2 { color: white; border-bottom-color: rgba(255,255,255,0.3); }
 
-footer {
-  color: var(--color-text-light);
-  font-size: 14px;
-}
+/* 文字大小變化 */
+section.text-sm { font-size: 22px; }
+section.text-lg { font-size: 30px; }
+
+/* ===== footer / header ===== */
+header { color: var(--color-text-muted); font-size: 14px; }
+footer { color: var(--color-text-muted); font-size: 14px; }
