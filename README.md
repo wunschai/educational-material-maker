@@ -36,15 +36,17 @@ claude --plugin-dir /path/to/educational-material-maker
 ## Pipeline
 
 ```
-/edu.research <topic>       → 研究摘要
+/edu.research <topic>            → 研究摘要
       ↓ 老師審閱
-/edu.outline <slug>         → 教學大綱
+/edu.outline <slug>              → 教學大綱
       ↓ 老師審閱
-/edu.slides <slug>          → Marp 簡報 + 品質審查
+/edu.slides <slug>               → Marp 簡報 + 品質審查
       ↓ 老師審閱
-/edu.narrate <slug>         → 語音旁白
+/edu.infographic <slug>          → NotebookLM 資訊圖表（選用）
+      ↓ 老師審閱
+/edu.narrate <slug>              → 語音旁白 + 字幕
       ↓ 老師試聽
-/edu.render <slug>          → mp4 教學影片
+/edu.render <slug>               → mp4 教學影片（含字幕）
 ```
 
 每個階段都會產出檔案，老師可以在任一步驟中斷、手改、重跑下一步。
@@ -55,9 +57,10 @@ claude --plugin-dir /path/to/educational-material-maker
 |---|---|---|
 | `/edu.research <topic>` | 搜尋資料、彙整核心概念與引用 | `topic.research.md` |
 | `/edu.outline <slug> [--level=basic\|standard\|full]` | 產出教學大綱（支援三種詳細度） | `outline.md` |
-| `/edu.slides <slug>` | 產出 Marp 簡報 + 自動品質審查 | `slides.md` + review 報告 |
-| `/edu.narrate <slug> [--voice=<id>]` | 從 speaker notes 生成 Edge-TTS 語音 | `narration/*.txt` + `audio/*.mp3` |
-| `/edu.render <slug>` | 簡報截圖 + 語音 → mp4 影片 | `dist/<slug>.mp4` |
+| `/edu.slides <slug> [--density] [--tone] [--theme]` | 產出 Marp 簡報 + 自動品質審查 | `slides.md` + review 報告 |
+| `/edu.infographic <slug> [--style] [--pages]` | NotebookLM 資訊圖表（選用） | `infographics/slide-NN.png` |
+| `/edu.narrate <slug> [--lang] [--subtitle-lang]` | 語音旁白 + 字幕 | `audio/*.mp3` + `subtitles/*.srt` |
+| `/edu.render <slug>` | 簡報截圖 + 語音 → mp4（自動偵測字幕） | `dist/<slug>.mp4` |
 
 ## 範例
 
@@ -79,20 +82,26 @@ claude --plugin-dir ./educational-material-maker
 
 ```
 lessons/<slug>/
-├── topic.research.md     研究摘要（核心概念 + 引用）
-├── outline.md            教學大綱（學習目標 + 章節骨架）
-├── slides.md             Marp 簡報原始碼
-├── slides.html           可預覽的 HTML 簡報
-├── diagrams/             MCP 生成的結構性圖表（心智圖、流程圖等）
-├── images/               章節封面照片
+├── topic.research.md      研究摘要（核心概念 + 引用）
+├── outline.md             教學大綱（學習目標 + 章節骨架 + 版型節奏）
+├── slides.md              Marp 簡報原始碼
+├── slides.html            可預覽的 HTML 簡報
+├── diagrams/              MCP 生成的結構性圖表（心智圖、流程圖等）
+├── images/                章節封面照片
+├── infographics/          NotebookLM 生成的資訊圖表（選用）
+│   ├── slide-01.png
+│   └── ...
 ├── narration/             逐頁講稿文字
 │   ├── slide-01.txt
 │   └── ...
 ├── audio/                 逐頁 TTS 語音
 │   ├── slide-01.mp3
 │   └── ...
+├── subtitles/             字幕
+│   ├── per-slide/         Edge-TTS 逐頁精準字幕
+│   └── zh-TW.srt          合併後的最終字幕
 └── dist/
-    └── <slug>.mp4         最終教學影片（720p, H.264+AAC）
+    └── <slug>.mp4         最終教學影片（720p, H.264+AAC, 含字幕）
 ```
 
 ## 功能特色
@@ -121,11 +130,37 @@ lessons/<slug>/
 - **學習目標覆蓋度**：outline 的每個學習目標是否都有 slide 覆蓋
 - **內容正確性**：slides 的事實是否與 research 一致
 
-### 自訂主題 + MCP 圖表
+### 六種視覺主題 + 19 種版型 class
 
-- **edu-default theme**：深藍配色、橘色強調，提供 `lead` / `summary` / `quote` / `card` / `invert` 五種版型 class
-- **MCP 圖表整合**（可選）：心智圖、魚骨圖、流程圖、文氏圖等 27+ 種圖表，由 [mcp-server-chart](https://github.com/antvis/mcp-server-chart) 與 [mcp-mermaid](https://github.com/hustcc/mcp-mermaid) 提供
-- **照片嵌入**：自動搜尋 Unsplash / Wikimedia Commons 圖片作為章節封面
+| 主題 | 風格 | 適用場景 |
+|---|---|---|
+| `edu-default` | 深藍 + 橘色強調 | 通用學術（預設） |
+| `edu-warm` | 暖色柔和 | 通識課、工作坊 |
+| `edu-dark` | 深色護眼 | 晚間課程、線上教學 |
+| `edu-stem` | 冷色理工 | STEM、資訊科技 |
+| `edu-humanities` | 復古人文 | 文史哲、社會科學 |
+| `edu-minimal` | 極簡商務 | 商務簡報、管理課程 |
+
+19 種版型 class：lead / summary / end / cols / cols-3 / comparison / highlight-box / key-point / statement / quote / process / big-number / agenda / card / invert / full-image / intro / two-cols-header / image-text
+
+### 內容控制參數
+
+- `--density=concise|standard|detailed`：控制每頁 bullet 數量與文字密度
+- `--tone=academic|casual|engaging|review`：控制文字風格與 speaker notes 語調
+- `--theme=edu-default|edu-warm|...`：切換視覺主題
+
+### 圖表 + 圖片整合
+
+- **MCP 圖表**（可選）：心智圖、魚骨圖、流程圖、文氏圖等 27+ 種，由 [mcp-server-chart](https://github.com/antvis/mcp-server-chart) 與 [mcp-mermaid](https://github.com/hustcc/mcp-mermaid) 提供
+- **Mermaid 自動生成**：內容涉及流程/關係/時間線時自動使用 Mermaid 語法
+- **照片嵌入**：自動搜尋 Unsplash / Wikimedia Commons 圖片
+- **NotebookLM 資訊圖表**（選用）：`/edu.infographic` 批次生成教學資訊圖表
+
+### 字幕 + 雙語支援
+
+- `--subtitle-lang=zh-TW`：生成精準字幕（Edge-TTS WordBoundary 時間戳）
+- `--lang=en --subtitle-lang=zh-TW`：英文旁白 + 中文字幕（雙語）
+- 字幕自動燒入 mp4（白字黑邊、底部置中、FontSize=18）
 
 ### 視覺自審
 
@@ -159,9 +194,11 @@ claude --plugin-dir ./educational-material-maker --mcp-config .mcp.json
 |---|---|
 | 簡報 | [Marp](https://marp.app/)（Markdown → HTML/PDF） |
 | TTS | [Edge-TTS](https://github.com/rany2/edge-tts)（免費、中文語音 `zh-TW-HsiaoChenNeural`） |
+| 字幕 | Edge-TTS WordBoundary → SRT（精準到 100ms） |
 | 截圖 | [Playwright](https://playwright.dev/)（Chromium headless） |
-| 影片 | [ffmpeg](https://ffmpeg.org/)（逐頁截圖 + 音檔 → mp4 拼接） |
+| 影片 | [ffmpeg](https://ffmpeg.org/)（逐頁截圖 + 音檔 + 字幕 → mp4） |
 | 圖表 | [mcp-server-chart](https://github.com/antvis/mcp-server-chart) + [mcp-mermaid](https://github.com/hustcc/mcp-mermaid)（可選 MCP） |
+| 資訊圖表 | [NotebookLM](https://notebooklm.google.com/)（AI 生成教學資訊圖表，選用） |
 
 ## Plugin 結構
 
@@ -173,6 +210,7 @@ educational-material-maker/
 │   ├── edu.research/SKILL.md
 │   ├── edu.outline/SKILL.md
 │   ├── edu.slides/SKILL.md
+│   ├── edu.infographic/SKILL.md
 │   ├── edu.narrate/SKILL.md
 │   └── edu.render/SKILL.md
 ├── agents/                        Subagents
@@ -181,21 +219,25 @@ educational-material-maker/
 ├── scripts/                       Wrapper scripts
 │   ├── build_slides.sh
 │   ├── synthesize_tts.py
+│   ├── generate_subtitles.py
+│   ├── batch_infographic.py
 │   └── render_video.py
-├── themes/
-│   └── edu-default.css            自訂 Marp 主題
+├── themes/                        六種視覺主題
+│   ├── edu-default.css
+│   ├── edu-warm.css
+│   ├── edu-dark.css
+│   ├── edu-stem.css
+│   ├── edu-humanities.css
+│   └── edu-minimal.css
 ├── references/
 │   └── AGENTS.md                  共用規範（schema、命名、引用格式）
 ├── docs/                          DDD 開發文件
 │   ├── PRD.md
 │   ├── TECHSTACK.md
-│   └── 0001-skeleton/
-│   └── 0002-outline-and-slides/
-│   └── 0003-narration-and-render/
-│   └── 0004-slide-visuals/
+│   └── 0001-skeleton/ ~ 0005-slide-quality-boost/
 └── lessons/                       使用者產出的教材
-    ├── library-ethics/            範例：圖書館倫理（含完整 mp4）
-    └── claude-pro-intro/          範例：Claude Pro 功能介紹
+    ├── library-ethics/            範例：圖書館倫理
+    └── claude-productivity-guide/ 範例：Claude 生產力手冊
 ```
 
 ## 開發方法論

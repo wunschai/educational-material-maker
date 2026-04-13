@@ -23,6 +23,15 @@ if sys.stdout.encoding != "utf-8":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 
+# Rate limit handling
+MAX_RETRIES = 3
+INITIAL_BACKOFF = 60  # seconds
+
+
+class RateLimitError(Exception):
+    pass
+
+
 def run_nlm(args: list[str], timeout: int = 30) -> str:
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONLEGACYWINDOWSSTDIO": "utf-8"}
     result = subprocess.run(
@@ -32,7 +41,13 @@ def run_nlm(args: list[str], timeout: int = 30) -> str:
     )
     stdout = result.stdout.decode("utf-8", errors="replace") if result.stdout else ""
     stderr = result.stderr.decode("utf-8", errors="replace") if result.stderr else ""
-    return stdout + stderr
+    combined = stdout + stderr
+
+    # Detect rate limit / quota errors
+    if any(sig in combined for sig in ["code 8", "Could not create infographic", "429", "RESOURCE_EXHAUSTED"]):
+        raise RateLimitError(combined[:300])
+
+    return combined
 
 
 def parse_slides(slides_path: Path) -> list[dict]:
@@ -113,18 +128,34 @@ def generate_infographic(
     ref_tmp.write_text(ref_content, encoding="utf-8")
     run_nlm(["source", "add", nb_id, "--text", str(ref_tmp)])
 
-    # 4. Generate infographic
+    # 4. Generate infographic (with retry + exponential backoff)
     print(f"  [4/6] Generating infographic (style={style})...")
     focus = f"這是「{topic}」教學簡報的第 {num} 頁，主題是「{title}」。請以大綱檔為核心結構生成教學用資訊圖表。語言使用繁體中文。"
-    run_nlm([
-        "infographic", "create", nb_id,
-        "--style", style,
-        "--orientation", "landscape",
-        "--detail", "standard",
-        "--language", "zh-TW",
-        "--focus", focus,
-        "--confirm",
-    ], timeout=60)
+    created = False
+    for attempt in range(MAX_RETRIES):
+        try:
+            run_nlm([
+                "infographic", "create", nb_id,
+                "--style", style,
+                "--orientation", "landscape",
+                "--detail", "standard",
+                "--language", "zh-TW",
+                "--focus", focus,
+                "--confirm",
+            ], timeout=60)
+            created = True
+            break
+        except RateLimitError as e:
+            wait = INITIAL_BACKOFF * (2 ** attempt)
+            print(f"  RATE LIMITED (attempt {attempt+1}/{MAX_RETRIES}), waiting {wait}s...")
+            time.sleep(wait)
+
+    if not created:
+        print(f"  ERROR: rate limit not resolved after {MAX_RETRIES} retries")
+        run_nlm(["notebook", "delete", nb_id, "--confirm"])
+        outline_tmp.unlink(missing_ok=True)
+        ref_tmp.unlink(missing_ok=True)
+        raise RateLimitError("daily limit likely reached")
 
     # 5. Poll until done (max 5 min)
     print("  [5/6] Waiting for completion", end="", flush=True)
@@ -132,14 +163,17 @@ def generate_infographic(
     for _ in range(20):
         time.sleep(15)
         print(".", end="", flush=True)
-        status = run_nlm(["studio", "status", nb_id])
+        try:
+            status = run_nlm(["studio", "status", nb_id])
+        except RateLimitError:
+            continue  # polling shouldn't be rate-limited, but handle gracefully
         if '"completed"' in status:
             done = True
             break
     print()
 
     if not done:
-        print(f"  TIMEOUT: slide {num} did not complete in 3 min")
+        print(f"  TIMEOUT: slide {num} did not complete in 5 min")
         run_nlm(["notebook", "delete", nb_id, "--confirm"])
         return False
 
@@ -243,22 +277,34 @@ def main():
     success = 0
     failed = []
     start_time = time.time()
+    consecutive_rate_limits = 0
 
-    def process_one(page_num: int) -> tuple[int, bool]:
-        page = page_map[page_num]
+    # Serial processing (NotebookLM doesn't support concurrent requests)
+    for num in remaining:
+        page = page_map[num]
         ref = extract_reference(research_path, page["content"])
-        out = infographics_dir / f"slide-{page_num:02d}.png"
-        ok = generate_infographic(page, ref, topic, args.style, out)
-        return page_num, ok
+        out = infographics_dir / f"slide-{num:02d}.png"
 
-    with ThreadPoolExecutor(max_workers=BATCH_SIZE) as executor:
-        futures = {executor.submit(process_one, num): num for num in remaining}
-        for future in as_completed(futures):
-            num, ok = future.result()
-            if ok:
-                success += 1
-            else:
-                failed.append(num)
+        try:
+            ok = generate_infographic(page, ref, topic, args.style, out)
+        except RateLimitError:
+            consecutive_rate_limits += 1
+            failed.append(num)
+            if consecutive_rate_limits >= 2:
+                not_done = remaining[remaining.index(num):]
+                print(f"\n  DAILY LIMIT REACHED after {success} pages.")
+                print(f"  Completed: {sorted(set(remaining[:remaining.index(num)]) - set(failed))}")
+                print(f"  Remaining: {not_done}")
+                print(f"  Re-run with: --pages {','.join(str(p) for p in not_done)}")
+                break
+            continue
+        else:
+            consecutive_rate_limits = 0
+
+        if ok:
+            success += 1
+        else:
+            failed.append(num)
 
     elapsed = time.time() - start_time
     print(f"\n{'='*60}")

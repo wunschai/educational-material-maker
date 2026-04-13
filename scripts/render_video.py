@@ -24,6 +24,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from config import SLIDE_BUFFER_SECONDS
+
 
 def check_dependencies() -> None:
     if not shutil.which("ffmpeg"):
@@ -53,15 +56,27 @@ def screenshot_slides(html_path: str, frames_dir: Path, width: int, height: int)
         page = browser.new_page(viewport={"width": width, "height": height})
         page.goto(file_url, wait_until="networkidle")
 
-        slide_count = page.evaluate("document.querySelectorAll('section').length")
-        if slide_count == 0:
+        # Use Marp's pagination-total as authoritative page count (ignores ghost sections)
+        pagination_total = page.evaluate("""
+            (() => {
+                const el = document.querySelector('[data-marpit-pagination-total]');
+                return el ? parseInt(el.getAttribute('data-marpit-pagination-total')) : 0;
+            })()
+        """)
+        dom_section_count = page.evaluate("document.querySelectorAll('section').length")
+
+        if pagination_total > 0:
+            slide_count = pagination_total
+            if dom_section_count != pagination_total:
+                print(f"  Note: {dom_section_count} DOM sections, {pagination_total} real pages (Marp pagination)")
+        elif dom_section_count > 0:
+            slide_count = dom_section_count
+        else:
             print("Error: no slides found in HTML", file=sys.stderr)
             browser.close()
             sys.exit(1)
 
-        # Marp HTML uses presentation mode — slides are NOT vertically stacked.
-        # Navigate using keyboard ArrowRight (most reliable across Marp versions).
-        # First slide is already visible after page load.
+        # Marp bespoke ArrowRight navigates only real pages, skipping ghost sections.
         for i in range(slide_count):
             if i > 0:
                 page.keyboard.press("ArrowRight")
@@ -253,7 +268,7 @@ def main() -> None:
 
     print("[2/4] Composing segments (PNG + MP3 → MP4)...")
     segment_paths = compose_segments(
-        frames_dir, audio_dir, segments_dir, slide_count, buffer=1.5,
+        frames_dir, audio_dir, segments_dir, slide_count, buffer=SLIDE_BUFFER_SECONDS,
         scale_to=f"{width}:{height}" if use_infographics else None,
     )
     if not segment_paths:

@@ -21,6 +21,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from config import SLIDE_BUFFER_SECONDS
+
 
 def get_audio_duration(mp3_path: Path) -> float:
     result = subprocess.run(
@@ -129,7 +132,7 @@ def main():
 
     all_entries = []
     current_offset = 0.0
-    buffer = 1.5  # gap between slides (matches render_video.py)
+    buffer = SLIDE_BUFFER_SECONDS
 
     for srt_file in srt_files:
         slide_num = srt_file.stem.split(".")[0]  # slide-01
