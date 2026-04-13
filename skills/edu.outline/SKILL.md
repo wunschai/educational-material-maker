@@ -80,12 +80,25 @@ py -c "from datetime import datetime, timezone; print(datetime.now(timezone.utc)
 ### 1. <章節名稱>（約 X 分鐘）
 - 重點：<概述>
 - 對應研究概念：<research.md 的概念 N 標題>
+- 建議版型節奏：`lead+bg → highlight-box → key-point`
 
 ### 2. <章節名稱>（約 X 分鐘）
 - 重點：<概述>
 - 對應研究概念：<research.md 的概念 M 標題>
+- 建議版型節奏：`lead+bg → comparison → quote`
 
-（4-7 章節。每章節含重點 + 時長估 + 對應研究概念。章節順序應有教學節奏——從基礎到進階、從定義到應用。）
+（4-7 章節。每章節含重點 + 時長估 + 對應研究概念 + **建議版型節奏**。）
+
+**建議版型節奏**（Sprint 0005 P3 新增）：每章節標註 2-4 頁的版型序列，給 `/edu.slides` 的 Step 2.5 版型規劃當參考。版型選擇依據：
+- 有 A vs B → `comparison`
+- 有步驟 → `process`
+- 有數據 → `big-number`
+- 有重點條列 → `highlight-box`
+- 有核心結論 → `key-point`
+- 有引言/定義 → `quote`
+- 普通敘述 → 預設（不標）
+
+章節順序應有教學節奏——從基礎到進階、從定義到應用。
 
 ## 預估總時長
 約 XX 分鐘

@@ -65,9 +65,45 @@ description: >
 - `lessons/<slug>/outline.md` — 結構、學習目標、章節骨架、時長估
 - `lessons/<slug>/topic.research.md` — 事實、引用、核心概念
 
+### Step 2.5：版型規劃（Sprint 0005 P3 — 先規劃再執行）
+
+**在寫 slides.md 之前，先為每一頁規劃 layout**。這一步是從 Presenton 的五階段管線學來的——先決定「每頁長什麼樣」，再填入內容，可大幅降低版型單調與結構混亂的問題。
+
+**規劃格式**（在 context 內完成，不需要寫檔）：
+
+```
+Page 1:  lead          — 標題頁
+Page 2:  agenda        — 課程大綱
+Page 3:  lead + bg     — Ch1 封面 + 照片
+Page 4:  highlight-box — Ch1 重點條列
+Page 5:  comparison    — 新舊對比
+Page 6:  lead + bg     — Ch2 封面 + 照片
+Page 7:  key-point     — Ch2 核心主張
+Page 8:  quote         — 引言
+...
+Page N:  summary       — 今日重點
+Page N+1: (default)    — 引用來源
+```
+
+**規劃規則**：
+
+1. **每章節的版型節奏**：封面（lead+bg）→ 2-3 頁內容（混合 default / highlight-box / cols / comparison）→ 收尾（key-point 或 quote）。不要連續 3 頁以上用同一種 layout
+2. **版型匹配內容**（自動判斷）：
+   - 有 A vs B 結構 → `comparison`
+   - 有步驟/流程 → `process`
+   - 有重要數據 → `big-number`
+   - 有多項條列重點 → `highlight-box`
+   - 有核心結論一句話 → `key-point`
+   - 有引用/名言/定義 → `quote`
+   - 普通內容 → 預設 layout（不加 class）
+3. **不使用 HTML `<div>` 結構的 layout class**（`cols`、`cols-3`、`comparison`、`process`）**應控制在總頁數的 30% 以內**——這些 class 需要 HTML 標記，Marp 解析 HTML 時容易產生 ghost section。能用純 markdown（`highlight-box`、`key-point`、`quote`、`big-number`）達到類似效果的，優先用純 markdown 版型
+4. **標題頁和結尾頁是固定的**：Page 1 = `lead`，最後一頁 = `summary` 或引用
+
+完成規劃後，**按規劃產出 slides.md**——每頁的 layout 必須跟規劃一致。
+
 ### Step 3：在 context 內產出 Marp slides
 
-**main agent 直接寫**（ADR-8：不走 subagent）。依照以下規則產出 slides.md：
+**main agent 直接寫**（ADR-8：不走 subagent）。依照 Step 2.5 的版型規劃產出 slides.md：
 
 #### Marp 結構
 
