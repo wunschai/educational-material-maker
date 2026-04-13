@@ -98,6 +98,7 @@ def compose_segments(
     segments_dir: Path,
     slide_count: int,
     buffer: float,
+    scale_to: str | None = None,
 ) -> list[Path]:
     segments_dir.mkdir(parents=True, exist_ok=True)
     segment_paths = []
@@ -111,6 +112,9 @@ def compose_segments(
             print(f"  Warning: missing frame {frame.name}, skipping", file=sys.stderr)
             continue
 
+        # Build video filter for scaling if using infographics (variable resolution)
+        vf = "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" if scale_to else None
+
         if audio.exists():
             duration = get_audio_duration(str(audio)) + buffer
             cmd = [
@@ -120,10 +124,10 @@ def compose_segments(
                 "-c:v", "libx264", "-tune", "stillimage",
                 "-c:a", "aac", "-b:a", "192k",
                 "-pix_fmt", "yuv420p",
-                "-t", f"{duration:.2f}",
-                "-shortest",
-                str(seg_out),
             ]
+            if vf:
+                cmd.extend(["-vf", vf])
+            cmd.extend(["-t", f"{duration:.2f}", "-shortest", str(seg_out)])
         else:
             # No audio for this slide: 3 seconds of silence
             duration = 3.0
@@ -134,9 +138,10 @@ def compose_segments(
                 "-c:v", "libx264", "-tune", "stillimage",
                 "-c:a", "aac", "-b:a", "192k",
                 "-pix_fmt", "yuv420p",
-                "-t", f"{duration:.2f}",
-                str(seg_out),
             ]
+            if vf:
+                cmd.extend(["-vf", vf])
+            cmd.extend(["-t", f"{duration:.2f}", str(seg_out)])
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
@@ -199,15 +204,29 @@ def main() -> None:
         sys.exit(1)
 
     lesson_dir = html_path.parent
+    infographics_dir = lesson_dir / "infographics"
     frames_dir = lesson_dir / "frames"
     segments_dir = lesson_dir / "segments"
 
-    print(f"[1/4] Screenshotting slides ({width}x{height})...")
-    slide_count = screenshot_slides(str(html_path), frames_dir, width, height)
-    print(f"  {slide_count} slides captured")
+    # If infographics/ exists, use it instead of Playwright screenshots
+    if infographics_dir.exists() and any(infographics_dir.glob("slide-*.png")):
+        print(f"[1/4] Using infographics/ (skipping Playwright screenshots)...")
+        frames_dir = infographics_dir
+        slide_count = len(list(infographics_dir.glob("slide-*.png")))
+        print(f"  {slide_count} infographic pages found")
+        # ffmpeg needs consistent resolution — scale infographics in compose step
+        use_infographics = True
+    else:
+        print(f"[1/4] Screenshotting slides ({width}x{height})...")
+        slide_count = screenshot_slides(str(html_path), frames_dir, width, height)
+        print(f"  {slide_count} slides captured")
+        use_infographics = False
 
     print("[2/4] Composing segments (PNG + MP3 → MP4)...")
-    segment_paths = compose_segments(frames_dir, audio_dir, segments_dir, slide_count, buffer=1.5)
+    segment_paths = compose_segments(
+        frames_dir, audio_dir, segments_dir, slide_count, buffer=1.5,
+        scale_to=f"{width}:{height}" if use_infographics else None,
+    )
     if not segment_paths:
         print("Error: no segments produced", file=sys.stderr)
         sys.exit(1)
@@ -216,8 +235,10 @@ def main() -> None:
     print("[3/4] Concatenating segments...")
     concat_segments(segment_paths, output_path)
 
-    print("[4/4] Cleaning up frames/ and segments/...")
-    shutil.rmtree(frames_dir, ignore_errors=True)
+    print("[4/4] Cleaning up intermediate files...")
+    # Don't delete infographics/ — it's user-generated content, not intermediate
+    if not use_infographics:
+        shutil.rmtree(frames_dir, ignore_errors=True)
     shutil.rmtree(segments_dir, ignore_errors=True)
 
     if output_path.exists():
