@@ -1,0 +1,26 @@
+/**
+ * @theme edu-humanities
+ * @auto-scaling fittingHeader
+ * @size 16:9 1280px 720px
+ *
+ * 人文藝術風 — 適合文學、歷史、哲學、社會科學
+ * 復古色調、襯線字體感、典雅
+ */
+
+@import 'edu-default';
+
+:root {
+  --color-primary: #5b2c6f;
+  --color-primary-light: #7d3c98;
+  --color-primary-dark: #4a235a;
+  --color-accent: #c0392b;
+  --color-accent-light: #e74c3c;
+  --color-bg: #fdf5f0;
+  --color-bg-alt: #f5ebe0;
+  --color-bg-warm: #fae5d3;
+  --color-text: #2c1810;
+  --color-text-light: #6b5b4e;
+  --color-text-muted: #a09080;
+  --color-border: #d5c4a1;
+  --color-border-light: #e8dcc8;
+}

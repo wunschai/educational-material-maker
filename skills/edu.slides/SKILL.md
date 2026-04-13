@@ -32,6 +32,7 @@ description: >
 | `<slug>` | 是 | — | 指向有 `outline.md` + `topic.research.md` 的 lesson |
 | `--density` | 否 | `standard` | 內容密度：`concise`（精簡）/ `standard`（標準）/ `detailed`（詳細） |
 | `--tone` | 否 | `academic` | 語調風格：`academic`（正式）/ `casual`（輕鬆）/ `engaging`（互動）/ `review`（複習） |
+| `--theme` | 否 | `edu-default` | 視覺主題：`edu-default`（藍橘學術）/ `edu-warm`（暖色柔和）/ `edu-dark`（深色護眼）/ `edu-stem`（冷色理工）/ `edu-humanities`（復古人文）/ `edu-minimal`（極簡商務） |
 
 ### Density 規則（來自 Presenton 分析）
 

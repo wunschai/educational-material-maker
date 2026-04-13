@@ -1,0 +1,26 @@
+/**
+ * @theme edu-warm
+ * @auto-scaling fittingHeader
+ * @size 16:9 1280px 720px
+ *
+ * 暖色柔和風 — 適合通識課、工作坊、人文社科
+ * 繼承 edu-default 的 layout classes，只覆寫配色
+ */
+
+@import 'edu-default';
+
+:root {
+  --color-primary: #744210;
+  --color-primary-light: #975a16;
+  --color-primary-dark: #5a3210;
+  --color-accent: #dd6b20;
+  --color-accent-light: #ed8936;
+  --color-bg: #fffaf0;
+  --color-bg-alt: #feebc8;
+  --color-bg-warm: #fef3e0;
+  --color-text: #3d2e1c;
+  --color-text-light: #7b6e5d;
+  --color-text-muted: #a89b8c;
+  --color-border: #e8dcc8;
+  --color-border-light: #f0e6d4;
+}

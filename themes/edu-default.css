@@ -458,6 +458,92 @@ section.highlight-box > ul > li, section.highlight-box > ol > li {
   box-shadow: 0 1px 6px rgba(0,0,0,0.04);
 }
 
+/* ————————————————————————————
+   15. statement — 強調聲明頁（比 key-point 更大膽）
+   from Slidev: 大字 + 強調色底
+   ———————————————————————————— */
+section.statement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 80px;
+  background: var(--color-accent);
+  color: white;
+}
+section.statement h2 {
+  font-size: 44px;
+  color: white;
+  border-bottom: none;
+  line-height: 1.4;
+}
+section.statement p { color: rgba(255,255,255,0.85); font-size: 22px; }
+section.statement strong { color: white; }
+
+/* ————————————————————————————
+   16. two-cols-header — 上標題 + 下雙欄
+   from Slidev: 標題橫跨，下方左右分欄
+   ———————————————————————————— */
+section.two-cols-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 16px 40px;
+  padding: 40px 50px;
+}
+section.two-cols-header h2 { grid-column: 1 / -1; margin-bottom: 0; }
+section.two-cols-header .left, section.two-cols-header .right { padding: 10px 0; }
+
+/* ————————————————————————————
+   17. intro — 講者/課程介紹頁
+   from Slidev: 左側大頭照 + 右側資訊
+   ———————————————————————————— */
+section.intro {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  align-items: center;
+  padding: 60px;
+}
+section.intro img {
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 4px solid var(--color-accent);
+}
+section.intro h2 { margin-bottom: 8px; }
+section.intro h3 { color: var(--color-text-light); font-weight: 400; margin-bottom: 16px; }
+
+/* ————————————————————————————
+   18. end — Q&A / 結束頁
+   ———————————————————————————— */
+section.end {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+}
+section.end h1, section.end h2 {
+  color: white;
+  border-bottom: none;
+  font-size: 52px;
+}
+section.end p { color: rgba(255,255,255,0.7); font-size: 22px; margin-top: 16px; }
+
+/* ————————————————————————————
+   19. image-text — 圖文專用頁（CSS 強化 bg left/right 的文字排版）
+   ———————————————————————————— */
+section.image-text {
+  padding: 50px 60px;
+}
+section.image-text h2 { margin-bottom: 12px; }
+section.image-text li { font-size: 24px; }
+
 /* ============================================================
    UTILITY CLASSES（可與其他 class 組合）
    ============================================================ */

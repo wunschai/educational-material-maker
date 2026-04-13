@@ -1,0 +1,26 @@
+/**
+ * @theme edu-stem
+ * @auto-scaling fittingHeader
+ * @size 16:9 1280px 720px
+ *
+ * 理工科學風 — 適合 STEM、資訊科技、工程、數學
+ * 冷色調、幾何感、高對比
+ */
+
+@import 'edu-default';
+
+:root {
+  --color-primary: #0d47a1;
+  --color-primary-light: #1565c0;
+  --color-primary-dark: #0a3470;
+  --color-accent: #00bcd4;
+  --color-accent-light: #4dd0e1;
+  --color-bg: #f5f7fa;
+  --color-bg-alt: #e8edf3;
+  --color-bg-warm: #e0f7fa;
+  --color-text: #1a2a3a;
+  --color-text-light: #546e7a;
+  --color-text-muted: #90a4ae;
+  --color-border: #b0bec5;
+  --color-border-light: #cfd8dc;
+}

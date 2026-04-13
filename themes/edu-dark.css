@@ -1,0 +1,36 @@
+/**
+ * @theme edu-dark
+ * @auto-scaling fittingHeader
+ * @size 16:9 1280px 720px
+ *
+ * 深色護眼風 — 適合晚間課程、線上教學、程式/技術主題
+ */
+
+@import 'edu-default';
+
+:root {
+  --color-primary: #90cdf4;
+  --color-primary-light: #63b3ed;
+  --color-primary-dark: #bee3f8;
+  --color-accent: #f6ad55;
+  --color-accent-light: #fbd38d;
+  --color-bg: #1a202c;
+  --color-bg-alt: #2d3748;
+  --color-bg-warm: #2a2520;
+  --color-text: #e2e8f0;
+  --color-text-light: #a0aec0;
+  --color-text-muted: #718096;
+  --color-border: #4a5568;
+  --color-border-light: #2d3748;
+}
+
+section { background: var(--color-bg); color: var(--color-text); }
+th { background: var(--color-primary-dark); color: var(--color-bg); }
+code { background: var(--color-bg-alt); color: var(--color-accent); }
+blockquote { background: var(--color-bg-alt); }
+section.card > * { background: var(--color-bg-alt); }
+section.cols-3 .c1, section.cols-3 .c2, section.cols-3 .c3 { background: var(--color-bg-alt); }
+section.highlight-box > ul > li, section.highlight-box > ol > li { background: var(--color-bg-alt); }
+section.comparison .vs-left { background: var(--color-bg-alt); }
+section.comparison .vs-right { background: #2a2520; }
+section.agenda ol li:nth-child(odd) { background: var(--color-bg-alt); }

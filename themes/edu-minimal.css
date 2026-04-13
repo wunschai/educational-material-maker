@@ -1,0 +1,28 @@
+/**
+ * @theme edu-minimal
+ * @auto-scaling fittingHeader
+ * @size 16:9 1280px 720px
+ *
+ * 極簡風 — 適合商務簡報、管理課程、專業報告
+ * 黑白灰為主、單一強調色、大量留白
+ */
+
+@import 'edu-default';
+
+:root {
+  --color-primary: #1a1a1a;
+  --color-primary-light: #333333;
+  --color-primary-dark: #000000;
+  --color-accent: #2563eb;
+  --color-accent-light: #3b82f6;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8f8f8;
+  --color-bg-warm: #f0f0f0;
+  --color-text: #1a1a1a;
+  --color-text-light: #666666;
+  --color-text-muted: #999999;
+  --color-border: #e0e0e0;
+  --color-border-light: #f0f0f0;
+}
+
+h1 { border-bottom: 2px solid var(--color-primary); }
