@@ -67,7 +67,12 @@ elif [ -z "$SKIP_THEME" ]; then
 fi
 
 echo "Building: $INPUT → $OUTPUT"
-npx @marp-team/marp-cli "$INPUT" $THEME_FLAG $PDF_FLAG -o "$OUTPUT"
+npx @marp-team/marp-cli "$INPUT" $THEME_FLAG $PDF_FLAG --html -o "$OUTPUT"
+
+# NOTE: Marp bespoke mode generates ghost sections from ![bg] and HTML blocks.
+# Post-processing to remove them breaks bespoke navigation JS.
+# Known issue — ghost sections are invisible in bespoke presenter but visible
+# when navigating with arrow keys. To be addressed in a future sprint.
 
 if [ -f "$OUTPUT" ]; then
     echo "Done: $OUTPUT"
