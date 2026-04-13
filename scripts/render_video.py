@@ -128,7 +128,7 @@ def compose_segments(
             ]
             if vf:
                 cmd.extend(["-vf", vf])
-            cmd.extend(["-t", f"{duration:.2f}", "-shortest", str(seg_out)])
+            cmd.extend(["-t", f"{duration:.2f}", str(seg_out)])
         else:
             # No audio for this slide: 3 seconds of silence
             duration = 3.0
