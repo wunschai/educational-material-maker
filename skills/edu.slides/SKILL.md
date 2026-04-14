@@ -486,10 +486,24 @@ with sync_playwright() as p:
 - slides_path: lessons/<slug>/slides.md
 - research_path: lessons/<slug>/topic.research.md
 
-請依照 ${CLAUDE_PLUGIN_ROOT}/agents/edu-reviewer.md 的審查流程，
-針對以下兩個維度審查 slides.md：
+請依照 ${CLAUDE_PLUGIN_ROOT}/agents/edu-reviewer.md 的審查流程。
+審查維度依 outline 的 type 自動調整：
+
+如果 type=lecture：
 1. 學習目標覆蓋度：outline 的每個學習目標是否都有對應的 slide 覆蓋？
-2. 內容正確性：slides 的事實敘述是否與 research.md 一致？有無 hallucinate？
+2. 內容正確性：slides 的事實敘述是否與 research.md 一致？
+
+如果 type=proposal：
+1. 論點完整性：問題陳述→目標→策略→時程是否邏輯連貫？
+2. 內容正確性：slides 的數據/描述是否與 research.md 一致？
+
+如果 type=briefing：
+1. 邏輯連貫性：背景→方法→發現→結論的推理鏈是否完整？
+2. 證據支撐：每個發現是否有數據或引用佐證？
+
+如果 type=report：
+1. 目標-成果對齊：目標回顧的每個目標是否在已完成工作中有對應？
+2. 數據支撐：關鍵成果是否有具體數據？
 
 回傳 review 報告（純 markdown），不修改任何檔案。
 第一個字元必須是 # 標題。

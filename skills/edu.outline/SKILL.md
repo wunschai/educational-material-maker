@@ -11,9 +11,9 @@ description: >
 
 # edu.outline — 教學大綱
 
-`/edu.outline <slug> [--level=basic|standard|full]`
+`/edu.outline <slug> [--level=basic|standard|full] [--type=lecture|proposal|briefing|report]`
 
-從研究摘要產出教學大綱。是 Educational Material Maker pipeline 的第二棒。
+從研究摘要產出大綱。支援 4 種簡報類型。是 pipeline 的第二棒。
 
 ## 前置閱讀
 
@@ -30,6 +30,27 @@ description: >
 |---|---|---|---|
 | `<slug>` | 是 | — | 指向 `lessons/<slug>/topic.research.md` |
 | `--level` | 否 | `basic` | `basic` / `standard` / `full` 三選一 |
+| `--type` | 否 | 自動判斷 | `lecture`（教學講座）/ `proposal`（計畫提案）/ `briefing`（研究技術簡報）/ `report`（進度成果報告） |
+
+### Type 自動判斷邏輯
+
+如果使用者沒指定 `--type`，main agent 應**讀完 topic.research.md 後自動判斷**：
+
+| 判斷依據 | 推斷 type |
+|---|---|
+| 內容有「學習目標」「教學」「課程」「學生」 | `lecture` |
+| 內容有「提案」「計畫」「預算」「時程」「KPI」 | `proposal` |
+| 內容有「研究方法」「實驗」「數據」「發現」「文獻」 | `briefing` |
+| 內容有「進度」「里程碑」「已完成」「待辦」「下一步」 | `report` |
+
+**如果無法判斷**（多種信號混合或都不明顯），用 `AskUserQuestion` 問使用者：
+```
+這份內容適合用哪種簡報類型？
+- lecture（教學講座）
+- proposal（計畫提案）
+- briefing（研究/技術簡報）
+- report（進度/成果報告）
+```
 
 非法 `--level` 值 → 拒絕並列出合法值。
 
@@ -143,6 +164,185 @@ standard 全部段落，**加上**：
 - <補充閱讀 1>
 （給有興趣的學生的延伸方向）
 ```
+
+---
+
+### Type: proposal（計畫提案）
+
+以下 schema **取代** lecture 的 schema（不使用學習目標/章節骨架）。`--level` 仍有效（basic 少段、full 多段）。
+
+```markdown
+# <計畫名稱> — 提案大綱
+
+> **Slug**: <slug>
+> **Type**: proposal
+> **Level**: <level>
+> **Generated**: <ISO 8601>
+> **Based on**: topic.research.md
+
+## 執行摘要
+<一段話概述：要做什麼、為什麼、預期成果>
+
+## 問題陳述
+- 現況痛點 1
+- 現況痛點 2
+（為什麼需要這個計畫？）
+
+## 計畫目標
+- 目標 1（可量化）
+- 目標 2（可量化）
+
+## 策略與方法
+### 1. <策略名稱>
+- 做法：<概述>
+- 預期效果：<概述>
+
+### 2. <策略名稱>
+- 做法：<概述>
+- 預期效果：<概述>
+
+## 時程規劃
+| 階段 | 時間 | 里程碑 |
+|---|---|---|
+| 第一階段 | <時間> | <里程碑> |
+| 第二階段 | <時間> | <里程碑> |
+
+## 資源需求（standard 以上）
+- 人力：<需求>
+- 預算：<需求>
+- 工具/設備：<需求>
+
+## 風險評估（full 才有）
+| 風險 | 可能性 | 影響 | 應對策略 |
+|---|---|---|---|
+
+## 預期成果與 KPI（full 才有）
+- KPI 1：<指標> → <目標值>
+- KPI 2：<指標> → <目標值>
+```
+
+**版型節奏建議（proposal）**：
+- 執行摘要 → `key-point` 或 `statement`
+- 問題陳述 → `highlight-box`
+- 策略 → `process` 或 `cols`
+- 時程 → 表格頁（預設版型）
+- 風險 → `comparison`（風險 vs 應對）
+- 結尾 → `end`（Next Steps / Call to Action）
+
+---
+
+### Type: briefing（研究/技術簡報）
+
+```markdown
+# <主題> — 簡報大綱
+
+> **Slug**: <slug>
+> **Type**: briefing
+> **Level**: <level>
+> **Generated**: <ISO 8601>
+> **Based on**: topic.research.md
+
+## 研究背景
+<為什麼要做這個研究/技術探索>
+
+## 研究問題 / 假設
+- 問題 1
+- 問題 2（或假設 H1, H2）
+
+## 方法論
+### 方法 1：<名稱>
+- 描述：<概述>
+- 資料來源：<概述>
+
+### 方法 2：<名稱>
+- 描述：<概述>
+
+## 發現與結果
+### 發現 1：<標題>
+- 關鍵數據：<概述>
+- 意義：<概述>
+
+### 發現 2：<標題>
+- 關鍵數據：<概述>
+
+## 討論（standard 以上）
+- 與既有文獻的關係
+- 局限性
+- 意外發現
+
+## 結論
+- 結論 1
+- 結論 2
+
+## 未來方向（full 才有）
+- 下一步研究 1
+- 下一步研究 2
+```
+
+**版型節奏建議（briefing）**：
+- 背景/問題 → `highlight-box`
+- 方法 → `process` 或 `cols`
+- 發現 → `big-number`（有數據時）或 `key-point`
+- 討論 → `comparison`（正反觀點）或 `quote`
+- 結論 → `statement`
+- 結尾 → `end`
+
+---
+
+### Type: report（進度/成果報告）
+
+```markdown
+# <報告標題> — 報告大綱
+
+> **Slug**: <slug>
+> **Type**: report
+> **Level**: <level>
+> **Generated**: <ISO 8601>
+> **Based on**: topic.research.md
+
+## 執行摘要
+<一段話概述：報告期間、主要成果、關鍵數字>
+
+## 目標回顧
+| 原定目標 | 達成狀態 | 說明 |
+|---|---|---|
+| 目標 1 | ✅ / ⚠️ / ❌ | <簡述> |
+| 目標 2 | ✅ / ⚠️ / ❌ | <簡述> |
+
+## 已完成工作
+### 1. <工作項目>
+- 描述：<做了什麼>
+- 成果：<產出什麼>
+
+### 2. <工作項目>
+- 描述：<做了什麼>
+- 成果：<產出什麼>
+
+## 關鍵成果 / 數據
+- 指標 1：<數值>（vs 目標 <數值>）
+- 指標 2：<數值>
+
+## 問題與挑戰（standard 以上）
+- 問題 1：<描述> → 應對：<處理方式>
+- 問題 2：<描述> → 應對：<處理方式>
+
+## 下一步計畫
+- 下一階段 1：<時間> — <目標>
+- 下一階段 2：<時間> — <目標>
+
+## 建議事項（full 才有）
+- 建議 1：<描述>
+- 建議 2：<描述>
+```
+
+**版型節奏建議（report）**：
+- 執行摘要 → `key-point` 或 `statement`
+- 目標回顧 → 表格頁（預設版型）
+- 已完成工作 → `highlight-box`
+- 關鍵數據 → `big-number`
+- 問題 → `comparison`（問題 vs 應對）
+- 下一步 → `process`
+- 結尾 → `end`
 
 ---
 
