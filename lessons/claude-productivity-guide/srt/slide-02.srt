@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:04,787
+This course map aligns six chapters with five learning objectives.
+
+2
+00:00:04,737 --> 00:00:10,675
+At the end of each chapter, please glance back at this map and note which layer we're currently on.
+
+3
+00:00:10,675 --> 00:00:16,075
+We'll revisit this framing in chapter six when we design your personal workflow system.
+

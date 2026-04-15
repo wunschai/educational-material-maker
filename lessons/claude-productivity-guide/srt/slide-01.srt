@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:03,575
+Welcome, educators and research colleagues.
+
+2
+00:00:03,525 --> 00:00:11,712
+Today we'll walk through Claude's four-layer architecture and see what it really means for AI to evolve from a chatbot into a digital agent.
+
+3
+00:00:11,712 --> 00:00:21,612
+We'll connect that shift to concrete implications for lesson planning and research, and by the end, design a repeatable, cumulative personal AI workflow.
+

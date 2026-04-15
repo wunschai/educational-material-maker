@@ -1,0 +1,24 @@
+1
+00:00:00,100 --> 00:00:04,200
+This diagram shows Skill's three-tier progressive structure.
+
+2
+00:00:04,150 --> 00:00:08,525
+The top tier lists only the skill name and a one-line description.
+
+3
+00:00:08,525 --> 00:00:11,462
+The middle tier is the method skeleton.
+
+4
+00:00:11,462 --> 00:00:14,587
+The bottom tier holds the full details.
+
+5
+00:00:14,587 --> 00:00:18,862
+The AI only loads the next tier when it actually needs it.
+
+6
+00:00:18,862 --> 00:00:26,225
+That's why a Skill isn't just a longer prompt—it's a capability governance mechanism built around token efficiency.
+

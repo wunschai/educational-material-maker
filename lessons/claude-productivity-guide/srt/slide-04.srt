@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:04,087
+Pay special attention to the third line on the right column.
+
+2
+00:00:04,037 --> 00:00:10,137
+The biggest difference with an agent isn't that it's smarter—it's that the deliverable itself has changed.
+
+3
+00:00:10,137 --> 00:00:14,350
+Instead of text suggestions, you receive completed work.
+
+4
+00:00:14,350 --> 00:00:19,937
+This shift is the foundation for understanding every feature we'll cover later in the course.
+

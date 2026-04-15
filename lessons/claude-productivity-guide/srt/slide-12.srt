@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:04,912
+The rule for picking a model is: let each one play to its sweet spot.
+
+2
+00:00:04,862 --> 00:00:11,175
+Don't use Opus to grade multiple-choice questions, and don't use Haiku to debate methodology.
+
+3
+00:00:11,175 --> 00:00:16,075
+Make the decision based on task characteristics, not model pricing.
+
+4
+00:00:16,075 --> 00:00:21,550
+Your total cost will actually be lower than if you always picked the most powerful option.
+

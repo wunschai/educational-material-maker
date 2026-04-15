@@ -1,0 +1,1 @@
+Every factual claim in this course is grounded in a single source article. If you'd like to explore a particular topic further, use that article as your starting point, and then supplement with the official Anthropic documentation and resources from the MCP open-source community.

@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:12,650
+To wrap up chapter one: when we stop viewing AI as a tool and start treating it as a collaborator, the bottleneck in lesson planning shifts from gathering information to designing workflows and reviewing quality.
+
+2
+00:00:12,600 --> 00:00:17,262
+That's exactly the ultimate question chapter six is going to answer.
+

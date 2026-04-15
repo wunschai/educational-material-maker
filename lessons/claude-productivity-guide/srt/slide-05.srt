@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:04,762
+This diagram places the two interaction patterns side by side.
+
+2
+00:00:04,712 --> 00:00:08,375
+The top half is a closed loop of question and answer.
+
+3
+00:00:08,375 --> 00:00:16,462
+The bottom half shows the agent breaking a task into four stages: planning, tool use, execution, and delivery.
+
+4
+00:00:16,462 --> 00:00:23,887
+Remember this shape—the four-layer architecture we'll see next was designed specifically to make that lower chain work better.
+

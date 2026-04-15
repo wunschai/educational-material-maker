@@ -1,0 +1,11 @@
+flowchart LR
+    U1[你] -->|問問題| C[Chatbot]
+    C -->|回答| U1
+    U2[你] -->|交付目標| A[Agent]
+    A -->|拆解步驟| P[計畫]
+    P -->|調用工具| T[執行]
+    T -->|交付成果| U2
+    style C fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
+    style A fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+    style P fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+    style T fill:#dbeafe,stroke:#2563eb,stroke-width:2px

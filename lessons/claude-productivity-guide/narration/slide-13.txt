@@ -1,0 +1,1 @@
+This decision flow boils model selection down to two questions: does the task require deep reasoning, and is the task frequency very high? The combination of answers maps directly onto when to use each of the three models. Feel free to stick this flowchart above your desk as a quick decision anchor.

@@ -1,0 +1,24 @@
+1
+00:00:00,100 --> 00:00:02,787
+Please linger on this slide a bit.
+
+2
+00:00:02,737 --> 00:00:06,212
+This sentence is the midpoint pivot of the course.
+
+3
+00:00:06,212 --> 00:00:09,262
+The first half was about capabilities.
+
+4
+00:00:09,262 --> 00:00:12,562
+The second half is about redefining your role.
+
+5
+00:00:12,562 --> 00:00:18,025
+Right now, think of one repetitive administrative task you'd most like to hand off.
+
+6
+00:00:18,025 --> 00:00:20,975
+We'll come back to it in chapter six.
+

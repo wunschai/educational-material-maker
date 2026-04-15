@@ -1,0 +1,1 @@
+On to chapter two. By the end of this chapter, you should be able to describe any AI task using four terms: am I planning in the Chat layer, calling an SOP from the Skill layer, or letting Cowork deliver the finished product directly?

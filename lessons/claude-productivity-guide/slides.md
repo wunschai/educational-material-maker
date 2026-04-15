@@ -5,59 +5,67 @@ paginate: true
 ---
 
 <style scoped>
-section { background: linear-gradient(135deg, #1a365d 0%, #2c5282 45%, #e67e22 100%); color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-h1 { font-size: 58px; border: none; margin-bottom: 24px; }
-p { font-size: 26px; opacity: 0.95; }
+section { background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #e67e22 100%); color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+h1 { font-size: 56px; border: none; color: white; }
+p { font-size: 22px; opacity: 0.92; }
 </style>
 
 # Claude 全方位生產力手冊
 
-從 Chatbot 到 Agent — 建構可用、可管、可擴張的 AI 工作系統
+從 Chatbot 到 Agent：教師與研究人員的 AI 工作系統
 
-企業 AI 導入課程 ・ 約 50 分鐘
+教育科技研修課程 ｜ 約 54 分鐘
 
-<!-- Speaker notes: 歡迎大家。今天這堂課的目標很簡單——讓你看懂 Claude 不只是「更強的 ChatGPT」，而是一整套可以改造組織工作方式的代理系統。我們會從範式轉移出發，一路走到企業怎麼真正把它用起來。 -->
+<!--
+Speaker notes: 歡迎各位老師與研究夥伴。今天我們要系統地走一遍 Claude 的四層架構，理解 AI 從聊天機器人進化為數位代理人對備課與研究的具體意義，並在最後規劃一套可重複、可累積的個人化 AI 工作流。
+-->
 
 ---
 
 <!-- _class: agenda -->
 
-## 今日學習目標
+## 課程地圖
 
-1. 說明 AI 從 **Chatbot** 到 **Agent** 的範式轉移
-2. 比較 Claude 四層架構（Chat / Skill / MCP / Cowork-Code）的職責分工
-3. 應用 **Opus / Sonnet / Haiku** 模型分層策略規劃成本效益
-4. 分析 **Skill 與 MCP** 的互補關係與規模化價值
-5. 評估企業建構 **「可用、可管、可擴張」** AI 工作系統的路徑
+1. 從 Chatbot 到 Agent：AI 範式轉移（約 8 分鐘）
+2. 四層架構：漸進式揭露的工作系統（約 10 分鐘）
+3. Chat 模式與模型選擇策略（約 10 分鐘）
+4. Cowork 模式：數位工作助理（約 8 分鐘）
+5. Code、Skill 與 MCP：工具、知識與連接（約 10 分鐘）
+6. 建構個人化 AI 工作系統（約 8 分鐘）
 
-<!-- Speaker notes: 五個目標，覆蓋從觀念到落地的整條線。這堂課沒有程式碼，但會讓你帶著一張「可以拿給老闆看的架構圖」離開。 -->
+**學習目標**：釐清範式轉移、辨認四層架構、選對模型、設計個人工作流。
+
+<!--
+Speaker notes: 這份課程地圖同時對應六個章節與五條學習目標。每個章節結束時請對照地圖，回想此刻我們落在哪個層級——這會在第六章的工作系統設計中再次回收。
+-->
 
 ---
 
 <!-- _class: lead -->
 
-![bg right:40%](https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200)
+# 第 1 章
+## 從 Chatbot 到 Agent
 
-# 第一章
+AI 從被動回答，進化為主動規劃、調用工具、交付成果的數位代理人。
 
-## 範式轉移：從 Chatbot 到 Agent
-
-<!-- Speaker notes: 先丟一個問題給大家——你現在用 AI，是在「問它問題」還是在「交代它任務」？這兩者差別在哪？我們這一章要講清楚。 -->
+<!--
+Speaker notes: 進入第一章。本章要解決的核心問題是——當我們說「AI 已經不一樣了」，這個「不一樣」到底改變了什麼。我們會從兩種互動模式的結構差異切入。
+-->
 
 ---
 
 <!-- _class: comparison -->
 
-## 問答者 vs 工作協作者
+## 被動問答 vs 主動交付
 
 <div class="vs-left">
 
-### Chatbot 時代
+### Chatbot
 
-- 被動等問題
-- 回覆文字答案
-- 單次對話即結束
-- 評估標準：「答得準不準」
+- 使用者提問、AI 回答
+- 單輪互動、無延續記憶
+- 產出文字，由人再加工
+- 適用：查詢、摘要、翻譯
 
 </div>
 
@@ -65,244 +73,295 @@ p { font-size: 26px; opacity: 0.95; }
 
 <div class="vs-right">
 
-### Agent 時代
+### Agent
 
-- 理解任務目標
+- 使用者交付任務目標
 - 拆解步驟、調用工具
-- 跨流程持續參與
-- 評估標準：「能不能交付」
+- 產出可直接使用的成果
+- 適用：備課、研究、行政流程
 
 </div>
 
-<!-- Speaker notes: 這張對比其實就是整堂課的入口。左邊是 2023 年以前的 AI，右邊是 2025 年之後的 AI。注意評估標準那行——從「答得準」變成「能不能交付」，這是企業 KPI 層級的改變。 -->
-
----
-
-<!-- _class: key-point -->
-
-## 範式轉移的一句話結論
-
-AI 的角色，從「單點回覆者」變成「任務流程中的工作協作者」。
-
-企業要問的不再是「它能不能生成答案」，而是「它能不能穩定參與流程、在可控範圍內產出成果」。
-
-<!-- Speaker notes: 這句話請各位記下來，它是後面所有內容的錨點。當我們談 Skill、談 MCP、談 Cowork，都是在回答同一個問題——怎麼讓 AI 真的「做事」。 -->
-
----
-
-<!-- _class: lead -->
-
-![bg left:35%](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200)
-
-# 第二章
-
-## Claude 四層架構總覽
-
-<!-- Speaker notes: Claude 不是一個單一產品，它是四層分工的系統。接下來這張圖，會是你之後跟同事解釋 AI 架構時最常用的那張。 -->
-
----
-
-<!-- _class: highlight-box -->
-
-## 漸進式揭露的四層分工
-
-- **Chat（大腦）** — 戰略規劃、邏輯辯證、問題定義
-- **Skill（知識）** — 專業 SOP 模組化的「數位食譜」
-- **MCP（手腳）** — 連接外部工具與資料庫，打破資訊孤島
-- **Cowork / Code（執行者）** — 在受控環境中交付實際成果
-
-四層依任務需求**逐層啟用**——降低上下文負擔、便於權限管理。
-
-<!-- Speaker notes: 注意「漸進式揭露」這四個字——這是整個架構的核心設計哲學。AI 不需要一次把所有能力都打開，而是依任務需要一層一層載入，這樣既省 token 又好管理。 -->
+<!--
+Speaker notes: 請特別注意右欄第三行。Agent 的最大差異不是更聰明，而是交付物的形式改變了——從「文字建議」變成「已完成的工作」。這是本課程理解後續所有功能的基礎。
+-->
 
 ---
 
 <!-- _paginate: false -->
 
-![w:980](diagrams/four-layer-mindmap.png)
+![w:1000](diagrams/chatbot-vs-agent.png)
 
-<!-- Speaker notes: 看這張圖的走向——使用者把任務丟給 Chat，Chat 判斷要調哪些 Skill、接哪些 MCP，最後交給 Cowork 或 Code 層去實際做事。這就是 Agent 的工作方式。 -->
-
----
-
-<!-- _class: lead -->
-
-![bg right:40%](https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200)
-
-# 第三章
-
-## Chat 模式 — 決策者的指揮中心
-
-<!-- Speaker notes: 很多人以為 Chat 就是聊天，錯。在企業情境下，Chat 是「邏輯整形層」——它不是回答你，它是幫你想清楚。 -->
-
----
-
-<!-- _class: highlight-box -->
-
-## Chat 承接的三類高價值任務
-
-- **問題定義** — 把模糊需求（「業績不好怎辦」）轉為可執行方案
-- **方案比較** — 列出選項、利弊分析、辨識風險
-- **邏輯整理** — 把零散資訊（會議紀錄、郵件、備忘）轉為提案架構
-
-共通點：**都是「把亂的變清楚」，不是「把空的變有」**。
-
-<!-- Speaker notes: 請注意最後那行——Chat 的強項是整理已有資訊，不是無中生有。當你手上有料但理不清，它就是你的外掛；當你什麼都沒有，它也變不出來。 -->
-
----
-
-## 模型選擇：不是一律選最強
-
-| 模型 | 定位 | 適用任務 | 成本 |
-|---|---|---|---|
-| **Opus 4** | 深度推理 | 高複雜度戰略、關鍵決策、長文分析 | 高 |
-| **Sonnet 4** | 日常主力 | 方案比較、邏輯整理、一般生產力 | 中 |
-| **Haiku 4** | 前線篩選 | 高頻低複雜度、即時回應、批次處理 | 低 |
-
-**策略**：80% 的任務用 Sonnet 夠，Opus 留給真正值得的 20%，Haiku 處理高頻作業。
-
-<!-- Speaker notes: 這張表請老闆看最有感——模型分層就是成本分層。公司導入 AI 最常犯的錯就是「一律用最貴的」，結果一個月帳單嚇死人。用對模型，比用最強模型更重要。 -->
-
----
-
-<!-- _class: lead -->
-
-![bg left:35%](https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200)
-
-# 第四章
-
-## Cowork 模式 — 個人數位工作助理
-
-<!-- Speaker notes: 如果 Chat 是軍師，Cowork 就是你的助理。差別在——它不只給建議，它真的會幫你做事。 -->
-
----
-
-<!-- _class: highlight-box -->
-
-## Cowork 的五大核心能力
-
-- **環境隔離** — 沙盒執行，資料主權保留在你這邊
-- **多模態處理** — 紙本 → Excel → Word 自動格式轉換
-- **子代理並行** — 大任務拆成小任務同時跑，避免目標模糊
-- **自動化排程** — 節奏化執行，不用每次手動觸發
-- **遠端調度** — 手機也能交代任務，實現行動化辦公
-
-定位：企業知識工作的**「中台執行層」**。
-
-<!-- Speaker notes: 舉個真實場景——你收到一疊紙本發票，以前要自己掃、key 進 Excel、做成報帳單，現在交給 Cowork，它跑一次就全搞定。這不是聊天，這是勞動力。 -->
-
----
-
-<!-- _class: quote -->
-
-## 什麼是「中台執行層」？
-
-> Cowork 打破 AI 僅能「提供建議」的限制，在受控環境下模擬人類操作，完成跨工具的行政流程。它不回答你問題，它**完成**你的工作。
-
-<!-- Speaker notes: 這個定義請記住——「模擬人類操作、完成跨工具流程」。這就是為什麼它叫「中台」，因為它站在你跟所有工具中間，把原本需要你切來切去的活，全包了。 -->
-
----
-
-<!-- _class: lead -->
-
-![bg right:40%](https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=1200)
-
-# 第五章
-
-## Code + Skill + MCP — 工程化的能力擴張
-
-<!-- Speaker notes: 前面講的都是使用者能直接看到的層，現在我們來看引擎蓋底下——讓 Claude 能規模化的兩個關鍵：Skill 跟 MCP。 -->
-
----
-
-<!-- _class: highlight-box -->
-
-## Skill 的三層漸進式結構
-
-- **Metadata** — 名稱、描述、觸發條件（Claude 判斷什麼時候該用這個 Skill）
-- **Instructions** — 核心 SOP、步驟、判斷邏輯（真正的「怎麼做」）
-- **Resources** — 範本、範例、參考檔案（需要時才載入）
-
-**設計哲學**：不是把整本手冊塞進 prompt，而是**「先看目錄，需要時翻章節」**——這就是 token 效率的關鍵。
-
-<!-- Speaker notes: 這三層結構背後有個重要觀念——不是每次都把所有資訊丟給 AI。先給它一張目錄（Metadata），它判斷要不要進來；決定用了才讀 Instructions；遇到具體情境才翻 Resources。這就是「漸進式揭露」。 -->
-
----
-
-<!-- _class: comparison -->
-
-## Skill vs MCP — 不是二選一
-
-<div class="vs-left">
-
-### Skill（會不會做）
-
-- 解決**方法封裝**
-- 把 SOP 轉成可重複調用
-- 讓 AI「知道做事的步驟」
-- 組織的**隱性 know-how**
-- 例：合約審閱 SOP
-
-</div>
-
-<div class="vs-divider">VS</div>
-
-<div class="vs-right">
-
-### MCP（做不做得到）
-
-- 解決**工具連接**
-- 接入 Notion、GitHub、DB
-- 讓 AI「拿得到做事的工具」
-- 組織的**外部系統**
-- 例：連到公司 CRM 抓資料
-
-</div>
-
-<!-- Speaker notes: 常見迷思是「有了 MCP 就不需要 Skill」。錯。Skill 是「會不會做」，MCP 是「做不做得到」。就算你有打開門的鑰匙（MCP），你還是得先知道該開哪扇門（Skill）。 -->
+<!--
+Speaker notes: 這張流程圖把兩種模式的互動結構並列。上半部是閉環的一問一答；下半部則可見 Agent 將任務拆解為計畫、調用工具、執行、交付的四階段鏈。請記住這個形狀——後續四層架構的設計動機，就是為了把下半條鏈做得更好。
+-->
 
 ---
 
 <!-- _class: key-point -->
 
-## Skill × MCP 的乘法效應
+## 範式轉移的教學意義
 
-Skill 把你的**方法**封裝進 AI。
+AI 不再只是「幫你查資料」的工具，
+而是能承接「從主題到教學影片」全流程的協作者。
 
-MCP 把你的**工具**接給 AI。
-
-兩者相乘，AI 才真正從「知道」走向「做到」——這就是企業 AI 規模化的基礎設施。
-
-<!-- Speaker notes: 這頁是整堂課的技術核心。記住這個乘法——方法 × 工具 = 真正的生產力。少掉任何一邊，AI 都還停在「建議層」上不了戰場。 -->
+<!--
+Speaker notes: 小結第一章。當我們把 AI 從工具視角切換為協作者視角，備課的瓶頸會從「蒐集資訊」移轉到「設計流程與審核品質」——這也是本課程第六章要回答的終極問題。
+-->
 
 ---
 
 <!-- _class: lead -->
 
-![bg left:35%](https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200)
+# 第 2 章
+## 四層架構
 
-# 第六章
+Chat、Skill、MCP、Cowork/Code 的分層設計，讓 AI 依任務需求逐層啟用。
 
-## 企業 AI 工作系統的建構路徑
+<!--
+Speaker notes: 進入第二章。本章的目標是讓各位能用四個名詞描述自己遇到的任何 AI 任務：我現在是在 Chat 層做規劃，還是該換到 Skill 層呼叫 SOP，或是讓 Cowork 直接交付成果？
+-->
 
-<!-- Speaker notes: 最後一章，我們從技術拉回組織層面——怎麼把這些能力真的裝進你的公司。 -->
+---
+
+<!-- _paginate: false -->
+
+![w:1100](diagrams/four-layer-workflow.png)
+
+<!--
+Speaker notes: 這張圖以同心圓呈現四層的啟用順序——Chat 在最內層負責規劃，Skill 封裝方法，MCP 連接外部工具，Cowork/Code 在最外層承接執行。由內而外是「漸進式揭露」：只在需要時啟用下一層，以控制上下文視窗的負擔。
+-->
+
+---
+
+<!-- _class: highlight-box -->
+
+## 四層各司其職
+
+- **Chat（大腦）**：承接策略規劃、邏輯辯證、教材比較等思考密集任務
+- **Skill（知識）**：將專業 SOP 模組化為可重複調用的數位食譜
+- **MCP（手腳）**：以開源協定串接學術資料庫、筆記工具與教學平台
+- **Cowork / Code（執行者）**：在受控環境內交付檔案、簡報、程式等具體產物
+
+<!--
+Speaker notes: 請特別注意「漸進式揭露」這個詞。四層不是一次全部啟動，而是依任務特性由上而下逐層解鎖——這是控制上下文視窗稅的核心機制，也是後續 Skill 三層漸進結構的設計淵源。
+-->
+
+---
+
+<!-- _class: process -->
+
+## 備課任務的四層呼叫鏈
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-text">Chat<br>規劃教學目標</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-text">Skill<br>挑選備課 SOP</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-text">MCP<br>連接學術資源</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-text">Cowork / Code<br>交付教材成果</div></div>
+</div>
+
+<!--
+Speaker notes: 這條流程圖把四層翻譯為一個具體的備課呼叫鏈：Chat 做策略規劃、Skill 挑選 SOP、MCP 取回學術資料、最終由 Cowork 或 Code 層產出教材。每一條教學任務都能對照這條鏈找到自己的位置。
+-->
+
+---
+
+<!-- _class: lead -->
+
+# 第 3 章
+## Chat 模式與模型選擇
+
+Chat 作為知識工作的「邏輯整形層」，承擔課程設計、教材比較、知識整理三類任務。
+
+<!--
+Speaker notes: 進入第三章。Chat 不只是問答介面，而是邏輯整形層——它的價值在於把老師腦中尚未成形的教學目標，轉換為可操作的教案骨架。接著我們來看三類典型任務與模型分工。
+-->
+
+---
+
+<!-- _class: cols-3 -->
+
+## 三款模型的任務分工
+
+<div class="c1">
+
+### Opus 4
+
+- 深度學術推理
+- 複雜教案設計
+- 跨文獻理論比較
+- 研究假設辯證
+
+</div>
+
+<div class="c2">
+
+### Sonnet 4
+
+- 日常備課主力
+- 一般寫作與摘要
+- 中等複雜度分析
+- 教材改寫與潤稿
+
+</div>
+
+<div class="c3">
+
+### Haiku 4
+
+- 批量作業評閱
+- 資料分類標記
+- 高頻篩選任務
+- 表格格式轉換
+
+</div>
+
+<!--
+Speaker notes: 選模型的原則是「讓每個模型發揮它的甜蜜點」。Opus 不該用來批改選擇題，Haiku 也不該用來辯證方法論。請以任務特性而非模型價格做決策，整體成本反而會比「一律最強」更低。
+-->
+
+---
+
+<!-- _paginate: false -->
+
+![w:1000](diagrams/model-selection-flow.png)
+
+<!--
+Speaker notes: 這張決策流程把模型選擇簡化為兩個問題——任務是否涉及深度推理、任務頻率是否極高。兩個問題的組合直接對應到三款模型的使用時機，老師可將此流程貼於工作桌前做為決策錨點。
+-->
+
+---
+
+<!-- _class: lead -->
+
+# 第 4 章
+## Cowork 模式
+
+從「給建議」進化到「幫你做」——AI 承接紙本數位化、作業格式、週報排程等實作勞務。
+
+<!--
+Speaker notes: 進入第四章。Cowork 與 Chat 的根本差異在於：Chat 交付的是建議，Cowork 交付的是檔案。本章將展示四項核心能力如何對應到具體的教學行政場景。
+-->
+
+---
+
+<!-- _class: highlight-box -->
+
+## Cowork 的四項核心能力
+
+- **環境隔離**：沙箱內處理學生資料，避免個資外洩或誤動主系統
+- **多模態處理**：紙本名冊、手寫筆記、照片作業自動轉為結構化檔案
+- **子代理並行**：同時搜尋多個教學資源網站並彙整結果
+- **自動化排程**：每週定時生成教學週報、作業進度摘要與簡報草稿
+
+<!--
+Speaker notes: 這四項能力互相組合會產生非常可觀的時間節省。舉例而言——紙本名冊翻拍（多模態）→ 沙箱內整理（環境隔離）→ 每週自動寄送到任課教師（排程），就是一條實際可落地的教學行政流。
+-->
 
 ---
 
 <style scoped>
-section { background: linear-gradient(135deg, #fdf6ec 0%, #ffffff 100%); border-left: 10px solid #e67e22; text-align: center; display: flex; flex-direction: column; justify-content: center; }
-h2 { font-size: 40px; color: #1a365d; margin-bottom: 28px; }
-.tagline { font-size: 34px; color: #e67e22; font-weight: 700; margin: 18px 0; line-height: 1.45; }
-p { font-size: 22px; color: #333; max-width: 820px; margin: 0 auto; }
+section { background: #fdf6ec; border-left: 8px solid #e67e22; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+h2 { color: #e67e22; font-size: 42px; border: none; }
+p { font-size: 28px; line-height: 1.7; color: #2d3748; }
 </style>
 
-## 真正的競爭優勢，不在模型數量
+## Cowork 的本質轉折
 
-<div class="tagline">從「人使用工具」<br>演進為「人管理代理、代理執行工作」</div>
+AI 不再只是「幫你想」，
+而是「幫你做」——
+承接重複的數位勞務，
+讓老師專注於師生互動與教學判斷。
 
-誰更早建立「**可用、可管、可擴張**」的 AI 工作系統，誰就贏在下個十年。
+<!--
+Speaker notes: 這頁請停留多一點時間。這句話是本課程的中段分水嶺——前半段我們談能力，後半段我們談角色的重新定位。請各位此刻想一件自己最想交付出去的重複性行政工作，待會第六章會回收。
+-->
 
-<!-- Speaker notes: 把這三個詞寫在你的白板上——可用、可管、可擴張。它們不是口號，是三個可以拆成檢查清單的治理指標。可用看體驗、可管看風險、可擴張看架構。 -->
+---
+
+<!-- _class: lead -->
+
+# 第 5 章
+## Code、Skill、MCP
+
+工具、知識與連接——三者互補，將個人教學 SOP 轉為可分享的能力模組。
+
+<!--
+Speaker notes: 進入第五章。Code、Skill、MCP 三者常被混淆。本章要釐清各自的責任邊界，並展示三者如何組合為一個教學工具的落地案例——例如本教材製作 plugin 本身。
+-->
+
+---
+
+<!-- _paginate: false -->
+
+![w:1000](diagrams/skill-three-layer.png)
+
+<!--
+Speaker notes: 這張圖呈現 Skill 的三層漸進結構：最上層只列出技能名稱與一句描述，中層是方法骨架，最底層才是完整細節。AI 只在需要時載入下一層，這也是為何 Skill 不等於「更長的 prompt」——它是以 token 效率為核心的能力治理機制。
+-->
+
+---
+
+<!-- _class: comparison -->
+
+## Skill 與 MCP 互補
+
+<div class="vs-left">
+
+### Skill：會不會做
+
+- 封裝方法論與 SOP
+- 三層漸進控制 token
+- 可重複調用、可分享
+- 例：備課流程、文獻回顧法
+
+</div>
+
+<div class="vs-divider">+</div>
+
+<div class="vs-right">
+
+### MCP：做不做得到
+
+- 開源協定、連接外部工具
+- 接學術資料庫、筆記、平台
+- 打破資訊孤島
+- 例：arXiv、Moodle、Notion
+
+</div>
+
+<!--
+Speaker notes: 請注意中間符號從 VS 改為加號——Skill 與 MCP 不是競爭，而是互補。Skill 回答「會不會做」，MCP 回答「做不做得到」。兩者結合才能把個人方法論串上真實世界的資料來源。
+-->
+
+---
+
+<!-- _class: lead -->
+
+# 第 6 章
+## 建構個人化 AI 工作系統
+
+效率提升的關鍵，不在於使用了哪個模型，而在於是否建立了可重複、可累積的工作流。
+
+<!--
+Speaker notes: 進入最後一章。這章要回收前面所有章節——把四層架構、模型選擇、Cowork 能力與 Skill/MCP 組合成一套「你自己的」工作系統。本章結束時各位應能描繪三個月內想先自動化的一項教學任務。
+-->
+
+---
+
+<!-- _class: quote -->
+
+## 角色的重新定位
+
+> 當 AI 系統跑通後，教師的角色
+> 將從「親手做每一件事」
+> 轉變為「設計流程、審核品質、專注教學」——
+> AI 承接重複性的數位勞務，
+> 人專注在只有人能做的教學判斷與師生互動。
+
+<!--
+Speaker notes: 這句話請各位記在心上。這不是要取代老師，而是讓老師把有限的專業時間投入到真正需要人類判斷的環節——教學現場的師生互動、評量的專業裁決、課程設計的價值取捨。這些是 AI 無法承接的地方。
+-->
 
 ---
 
@@ -310,32 +369,31 @@ p { font-size: 22px; color: #333; max-width: 820px; margin: 0 auto; }
 
 ## 今日重點回顧
 
-- **範式轉移** — AI 從問答者變成工作協作者，評估標準從「答得準」變成「能交付」
-- **四層架構** — Chat（大腦）/ Skill（知識）/ MCP（手腳）/ Cowork-Code（執行者）
-- **模型分層** — Opus 戰略、Sonnet 主力、Haiku 前線，用對比用強更重要
-- **Skill × MCP** — 方法 × 工具的乘法效應，是規模化的基礎設施
-- **治理指標** — 可用、可管、可擴張，三者缺一不可
+- AI 範式已從 Chatbot 的問答，轉為 Agent 的任務交付
+- 四層架構（Chat / Skill / MCP / Cowork-Code）以漸進式揭露控制上下文
+- 模型選擇依任務分工：Opus 深度、Sonnet 日常、Haiku 高頻
+- Cowork 將行政勞務自動化；Skill + MCP 將個人方法論連接世界
+- 個人化工作系統的價值在於「可重複、可累積、可分享」
 
-**一週行動**：挑一個你最常做的 SOP，試著寫成 Skill 雛型。
+**下一步**：挑一項每週重複的教學任務，寫成自己的第一個 Skill。
 
-<!-- Speaker notes: 重點都在這。最後的一週行動是今天唯一的作業——不要只是聽完就走，挑一個你自己最熟的流程，下週回來我們看誰先寫出第一個 Skill。 -->
+<!--
+Speaker notes: 課程結束。請各位在本週內完成一件事——挑出自己每週都要重複做的一項任務，無論是週報、名冊整理或文獻追蹤，把它寫成一份 Skill 草稿。下次我們會以這些草稿為基礎，進行實作工作坊。
+-->
 
 ---
 
 <style scoped>
 section { font-size: 18px; }
-h2 { font-size: 32px; color: #1a365d; }
-ol { line-height: 1.8; }
+h2 { font-size: 28px; }
 </style>
 
 ## 引用來源
 
-1. Claude 全方位生產力手冊 — 使用者提供之原始文章（accessed 2026-04-13）¹
+1. Claude 全方位生產力手冊——使用者提供之原始文章（accessed 2026-04-13）¹
 
-**延伸閱讀方向**：
+本次課程內容與圖表均根據上列來源改編而成。所有模型名稱（Opus 4、Sonnet 4、Haiku 4）、架構術語（Chat / Skill / MCP / Cowork / Code）與案例情境皆取自原始來源，未引入外部資料。
 
-- Anthropic 官方文件（Claude Agent Skills / MCP 規格）
-- Model Context Protocol 開源標準 — https://modelcontextprotocol.io
-- 企業 AI 導入案例——建議搭配 Notion、GitHub、CRM 等 MCP 實作觀摩
-
-<!-- Speaker notes: 今天的內容主要整合自使用者提供的原始文章，並對應到 Anthropic 官方架構。延伸學習請沿著 MCP 的開源標準與實作範例繼續深入。 -->
+<!--
+Speaker notes: 本課程的所有事實敘述均根植於單一來源文章。如老師有意延伸探討特定主題，建議以此文章為起點，再自行檢索 Anthropic 官方文件與 MCP 開源社群資源做補充。
+-->

@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:02,400
+That wraps up the course.
+
+2
+00:00:02,350 --> 00:00:05,550
+Please complete one thing before next week.
+
+3
+00:00:05,550 --> 00:00:14,362
+Pick a task you repeat every week—whether it's a status report, roster maintenance, or literature tracking—and write it up as a draft Skill.
+
+4
+00:00:14,362 --> 00:00:20,112
+In our next session, we'll use those drafts as the starting point for a hands-on workshop.
+

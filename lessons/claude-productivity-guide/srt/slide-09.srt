@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:04,312
+Pay close attention to this phrase, progressive disclosure.
+
+2
+00:00:04,262 --> 00:00:07,725
+The four layers aren't all activated at once.
+
+3
+00:00:07,725 --> 00:00:12,587
+They unlock one by one, guided by the characteristics of the task.
+
+4
+00:00:12,587 --> 00:00:21,287
+This is the core mechanism for controlling the context window tax, and it's also where the three-tier progressive structure inside Skill comes from.
+

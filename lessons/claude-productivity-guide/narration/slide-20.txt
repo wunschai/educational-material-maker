@@ -1,0 +1,1 @@
+On to the final chapter. Here we'll bring back everything from earlier—the four-layer architecture, model selection, Cowork's capabilities, and the Skill-plus-MCP combination—and fit them into a workflow that's yours. By the end of this chapter, you should be able to name one teaching task you want to automate over the next three months.

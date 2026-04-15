@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:02,412
+Let's begin chapter one.
+
+2
+00:00:02,362 --> 00:00:09,025
+The core question we want to answer here is: when we say AI has changed, what exactly has changed?
+
+3
+00:00:09,025 --> 00:00:14,462
+We'll get at it by comparing the structural differences between two modes of interaction.
+

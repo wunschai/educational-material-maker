@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:08,912
+This decision flow boils model selection down to two questions: does the task require deep reasoning, and is the task frequency very high?
+
+2
+00:00:08,862 --> 00:00:14,212
+The combination of answers maps directly onto when to use each of the three models.
+
+3
+00:00:14,212 --> 00:00:19,025
+Feel free to stick this flowchart above your desk as a quick decision anchor.
+

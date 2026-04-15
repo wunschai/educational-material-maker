@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:02,350
+On to the final chapter.
+
+2
+00:00:02,300 --> 00:00:14,200
+Here we'll bring back everything from earlier—the four-layer architecture, model selection, Cowork's capabilities, and the Skill-plus-MCP combination—and fit them into a workflow that's yours.
+
+3
+00:00:14,200 --> 00:00:21,025
+By the end of this chapter, you should be able to name one teaching task you want to automate over the next three months.
+

@@ -1,0 +1,24 @@
+1
+00:00:00,100 --> 00:00:05,337
+This flow translates the four layers into a concrete lesson-planning call chain.
+
+2
+00:00:05,287 --> 00:00:08,000
+Chat handles strategic planning.
+
+3
+00:00:08,000 --> 00:00:10,737
+Skill picks the right SOP.
+
+4
+00:00:10,737 --> 00:00:14,237
+MCP retrieves academic materials.
+
+5
+00:00:14,237 --> 00:00:18,775
+And finally, Cowork or Code produces the teaching artifact.
+
+6
+00:00:18,775 --> 00:00:23,225
+Any teaching task you have can find its place somewhere along this chain.
+

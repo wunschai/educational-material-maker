@@ -1,0 +1,24 @@
+1
+00:00:00,100 --> 00:00:05,925
+This diagram uses concentric circles to show the activation order of the four layers.
+
+2
+00:00:05,875 --> 00:00:09,187
+Chat sits at the innermost circle for planning.
+
+3
+00:00:09,187 --> 00:00:11,737
+Skill wraps methodology.
+
+4
+00:00:11,737 --> 00:00:14,750
+MCP connects external tools.
+
+5
+00:00:14,750 --> 00:00:19,587
+Cowork and Code sit at the outermost layer, handling execution.
+
+6
+00:00:19,587 --> 00:00:29,250
+Moving from the inside out is called progressive disclosure—you only activate the next layer when you actually need it, which keeps your context window manageable.
+

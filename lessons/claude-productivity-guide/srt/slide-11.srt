@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:01,862
+Chapter three.
+
+2
+00:00:01,812 --> 00:00:07,025
+Chat isn't just a question-and-answer interface—it's the logic-shaping layer.
+
+3
+00:00:07,025 --> 00:00:13,825
+Its real value is turning the half-formed teaching goals in a teacher's head into an actionable lesson skeleton.
+
+4
+00:00:13,825 --> 00:00:19,225
+Next, let's look at three typical tasks and how to divide them among the models.
+

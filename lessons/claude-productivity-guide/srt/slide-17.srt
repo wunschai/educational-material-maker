@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:01,962
+Chapter five.
+
+2
+00:00:01,912 --> 00:00:06,750
+Code, Skill, and MCP are often confused with one another.
+
+3
+00:00:06,750 --> 00:00:18,925
+In this chapter, we'll clarify the responsibility boundaries of each and show how the three combine into a real teaching-tool case study—in fact, the material-making plugin behind this very course.
+

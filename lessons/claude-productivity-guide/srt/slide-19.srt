@@ -1,0 +1,20 @@
+1
+00:00:00,100 --> 00:00:04,737
+Notice that the symbol in the middle has changed from VS to a plus sign.
+
+2
+00:00:04,687 --> 00:00:08,987
+Skill and MCP aren't competitors—they're complements.
+
+3
+00:00:08,987 --> 00:00:12,987
+Skill answers the question of whether you know how to do something.
+
+4
+00:00:12,987 --> 00:00:17,362
+MCP answers whether you have the access to actually do it.
+
+5
+00:00:17,362 --> 00:00:22,825
+Only together can they connect your personal methodology to real-world data sources.
+

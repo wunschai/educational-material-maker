@@ -1,0 +1,1 @@
+Combining these four capabilities can save a remarkable amount of time. Here's one example: photograph a paper roster as a multimodal input, process it inside a sandbox for data isolation, and automatically email it to the instructor each week on schedule. That's a concrete administrative workflow you can deploy today.

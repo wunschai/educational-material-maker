@@ -1,0 +1,1 @@
+This flow translates the four layers into a concrete lesson-planning call chain. Chat handles strategic planning. Skill picks the right SOP. MCP retrieves academic materials. And finally, Cowork or Code produces the teaching artifact. Any teaching task you have can find its place somewhere along this chain.

@@ -1,0 +1,1 @@
+Chapter three. Chat isn't just a question-and-answer interface—it's the logic-shaping layer. Its real value is turning the half-formed teaching goals in a teacher's head into an actionable lesson skeleton. Next, let's look at three typical tasks and how to divide them among the models.

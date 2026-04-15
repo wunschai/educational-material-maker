@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:01,900
+Chapter four.
+
+2
+00:00:01,850 --> 00:00:09,025
+The fundamental difference between Cowork and Chat is this: Chat delivers advice, Cowork delivers files.
+
+3
+00:00:09,025 --> 00:00:16,312
+In this chapter, we'll show how four core capabilities map onto concrete teaching and administrative scenarios.
+

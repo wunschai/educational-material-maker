@@ -1,0 +1,1 @@
+Welcome, educators and research colleagues. Today we'll walk through Claude's four-layer architecture and see what it really means for AI to evolve from a chatbot into a digital agent. We'll connect that shift to concrete implications for lesson planning and research, and by the end, design a repeatable, cumulative personal AI workflow.

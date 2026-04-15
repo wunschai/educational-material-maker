@@ -1,0 +1,1 @@
+This diagram shows Skill's three-tier progressive structure. The top tier lists only the skill name and a one-line description. The middle tier is the method skeleton. The bottom tier holds the full details. The AI only loads the next tier when it actually needs it. That's why a Skill isn't just a longer prompt—it's a capability governance mechanism built around token efficiency.

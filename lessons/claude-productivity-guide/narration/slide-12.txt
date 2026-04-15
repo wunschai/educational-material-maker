@@ -1,0 +1,1 @@
+The rule for picking a model is: let each one play to its sweet spot. Don't use Opus to grade multiple-choice questions, and don't use Haiku to debate methodology. Make the decision based on task characteristics, not model pricing. Your total cost will actually be lower than if you always picked the most powerful option.

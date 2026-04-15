@@ -1,0 +1,1 @@
+Chapter five. Code, Skill, and MCP are often confused with one another. In this chapter, we'll clarify the responsibility boundaries of each and show how the three combine into a real teaching-tool case study—in fact, the material-making plugin behind this very course.

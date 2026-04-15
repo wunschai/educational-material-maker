@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:02,650
+Please take this quote to heart.
+
+2
+00:00:02,600 --> 00:00:05,425
+The goal isn't to replace teachers.
+
+3
+00:00:05,425 --> 00:00:18,675
+It's to let teachers spend their limited professional time on the parts that genuinely require human judgment—the student interactions in the classroom, the professional calls in assessment, and the value tradeoffs in course design.
+
+4
+00:00:18,675 --> 00:00:22,400
+These are the places AI simply cannot step in.
+

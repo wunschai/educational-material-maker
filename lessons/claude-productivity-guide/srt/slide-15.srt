@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:04,825
+Combining these four capabilities can save a remarkable amount of time.
+
+2
+00:00:04,775 --> 00:00:17,275
+Here's one example: photograph a paper roster as a multimodal input, process it inside a sandbox for data isolation, and automatically email it to the instructor each week on schedule.
+
+3
+00:00:17,275 --> 00:00:21,525
+That's a concrete administrative workflow you can deploy today.
+

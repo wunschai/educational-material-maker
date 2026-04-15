@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:02,187
+On to chapter two.
+
+2
+00:00:02,137 --> 00:00:15,162
+By the end of this chapter, you should be able to describe any AI task using four terms: am I planning in the Chat layer, calling an SOP from the Skill layer, or letting Cowork deliver the finished product directly?
+

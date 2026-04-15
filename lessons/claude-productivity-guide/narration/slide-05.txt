@@ -1,0 +1,1 @@
+This diagram places the two interaction patterns side by side. The top half is a closed loop of question and answer. The bottom half shows the agent breaking a task into four stages: planning, tool use, execution, and delivery. Remember this shape—the four-layer architecture we'll see next was designed specifically to make that lower chain work better.
